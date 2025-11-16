@@ -5,11 +5,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
-                block: 'start'
+                block: 'center'
             });
         }
     });
 });
+
+
 
 const observerOptions = {
     threshold: 0.1,
