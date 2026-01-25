@@ -3,80 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce Redesign - Project Detail</title>
+    <title>Cronela</title>
     <link rel="stylesheet" href="../css/style-project.css">
+    <script src="https://kit.fontawesome.com/6fc9985251.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo">
                 <div class="logo-icon">G</div>
-                <span>Gilang Surya Ramadhan</span>
+                <span data-translate="name">Gilang Surya Ramadhan</span>
             </div>
-            <a href="../index.html" class="back-link">Back to Portfolio</a>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="lang-toggle" id="langToggle" title="Switch Language">EN</button>
+                <a href="../index.html" class="back-link" data-translate="back">Back to Portfolio</a>
+            </div>
         </nav>
     </header>
 
     <section class="project-hero">
-        <div class="project-category">Cronela</div>
-        <h1>Education Website</h1>
-        <div class="hero-image">
-            <img src="../img/vashion/home.png" alt="Project Hero Image" width="100%">
+        <div class="project-category fade-in">VASHION</div>
+        <h1 class="fade-in" data-translate="vashion-title">E-Commerce Website</h1>
+        <div class="hero-image zoom-in">
+            <img src="../img/vashion/home.png" alt="VASHION Project" width="100%">
         </div>
     </section>
 
     <section class="project-info">
-        <div class="info-main">
-            <h2>Project Overview</h2>
-            <p>Saya dan tim mengembangkan sebuah website e-commerce yang berfokus pada produk pakaian pria dan wanita</p>
+        <div class="info-main slide-up">
+            <h2 data-translate="overview-title">Project Overview</h2>
+            <p data-translate="vashion-overview">Saya dan tim mengembangkan sebuah website e-commerce yang berfokus pada produk pakaian pria dan wanita</p>
         </div>
-        <div class="info-sidebar">
+        <div class="info-sidebar slide-up">
             <div class="info-item">
-                <div class="info-label">My Role</div>
-                <div class="info-value">Fullstack Developer</div>
+                <div class="info-label" data-translate="role-label">MY ROLE</div>
+                <div class="info-value" data-translate="role-vashion">Fullstack Developer</div>
             </div>
             <div class="info-item">
-                <div class="info-label">Tools</div>
+                <div class="info-label" data-translate="tools-label">TOOLS</div>
                 <div class="info-value">HTML, CSS</div>
             </div>
             <div class="info-item">
-                <div class="info-label">Timeline</div>
-                <div class="info-value">2 Months</div>
+                <div class="info-label" data-translate="timeline-label">TIMELINE</div>
+                <div class="info-value" data-translate="timeline-vashion">2 Months</div>
             </div>
         </div>
     </section>
 
     <section class="process-section">
-        <h2>My Process</h2>
-        <p>Proses pembuatan diawali dengan mencari ide website yang cocok untuk projek awal. Lalu kami menemukan ide untuk membuat sebuah website e-commerce tidak terlalu sulit, dan kami dapat menerapkan materi yang sudah kami pelajari</p>
+        <h2 class="fade-in" data-translate="process-title">My Process</h2>
+        <p class="fade-in" data-translate="vashion-process">Proses pembuatan diawali dengan mencari ide website yang cocok untuk projek awal. Lalu kami menemukan ide untuk membuat sebuah website e-commerce tidak terlalu sulit, dan kami dapat menerapkan materi yang sudah kami pelajari</p>
     </section>
 
     <section class="challenge-section">
-        <h2>The Challenge</h2>
-        <p>Bagian yang cukup menantang dari projek ini adalah ketika mencoba mencari refrensi produk yang akan ditampilkan, selain itu, karena saat itu kami masih cukup awam dalam dunia web development, kami kesulitan untuk menentukan design dari website ini</p>
+        <h2 class="fade-in" data-translate="challenge-title">The Challenge</h2>
+        <p class="fade-in" data-translate="vashion-challenge">Bagian yang cukup menantang dari projek ini adalah ketika mencoba mencari refrensi produk yang akan ditampilkan, selain itu, karena saat itu kami masih cukup awam dalam dunia web development, kami kesulitan untuk menentukan design dari website ini</p>
         
         <div class="challenge-images">
-            <div class="challenge-img sketch-img">
-                <img src="../img/vashion/login.png" alt="" width="100%">
+            <div class="challenge-img sketch-img fade-in">
+                <img src="../img/vashion/login.png" alt="Login Page" width="100%">
             </div>
-            <div class="challenge-img sketch-img">
-                <img src="../img/vashion/product.png" alt="" width="100%">
+            <div class="challenge-img sketch-img fade-in">
+                <img src="../img/vashion/product.png" alt="Product Page" width="100%">
             </div>
         </div>
     </section>
 
     <section class="action-buttons">
-        <a href="https://gilang737.github.io/Vashion/" class="btn btn-primary">View Live Project</a>
-        <a href="https://github.com/Gilang737/Vashion" class="btn btn-secondary">View Source Code</a>
+        <a href="https://github.com/Gilang737/Cronela" class="btn btn-secondary fade-in" data-translate="source-code">View Source Code</a>
     </section>
 
     <section class="project-navigation">
-        <a href="cronela.html" class="nav-link">
+        <a href="cronela.html" class="nav-link fade-in">
             <span>←</span>
-            <span>Previous Project</span>
+            <span data-translate="prev-project">Previous Project</span>
         </a>
-        <a href="#" class="nav-link">
-            <span>Next Project</span>
+        <a href="#" class="nav-link next fade-in">
+            <span data-translate="next-project">Next Project</span>
             <span>→</span>
         </a>
     </section>

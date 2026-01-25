@@ -3,79 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce Redesign - Project Detail</title>
+    <title>Cronela</title>
     <link rel="stylesheet" href="../css/style-project.css">
+    <script src="https://kit.fontawesome.com/6fc9985251.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo">
                 <div class="logo-icon">G</div>
-                <span>Gilang Surya Ramadhan</span>
+                <span data-translate="name">Gilang Surya Ramadhan</span>
             </div>
-            <a href="../index.html" class="back-link">Back to Portfolio</a>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="lang-toggle" id="langToggle" title="Switch Language">EN</button>
+                <a href="../index.html" class="back-link" data-translate="back">Back to Portfolio</a>
+            </div>
         </nav>
     </header>
 
     <section class="project-hero">
-        <div class="project-category">Cronela</div>
-        <h1>Education Website</h1>
-        <div class="hero-image">
-            <img src="../img/cronela/home.png" alt="Project Hero Image" width="100%">
+        <div class="project-category fade-in">CRONELA</div>
+        <h1 class="fade-in" data-translate="cronela-title">Education Website</h1>
+        <div class="hero-image zoom-in">
+            <img src="../img/cronela/home.png" alt="CRONELA Project" width="100%">
         </div>
     </section>
 
     <section class="project-info">
-        <div class="info-main">
-            <h2>Project Overview</h2>
-            <p>Saya dan tim mengembangkan sebuah website pendidikan online yang berisi video-video pembelajaran dan juga kuis interaktif.</p>
+        <div class="info-main slide-up">
+            <h2 data-translate="overview-title">Project Overview</h2>
+            <p data-translate="cronela-overview">Saya dan tim mengembangkan sebuah website pendidikan online yang berisi video-video pembelajaran dan juga kuis interaktif.</p>
         </div>
-        <div class="info-sidebar">
+        <div class="info-sidebar slide-up">
             <div class="info-item">
-                <div class="info-label">My Role</div>
-                <div class="info-value">Fullstack Developer</div>
+                <div class="info-label" data-translate="role-label">MY ROLE</div>
+                <div class="info-value" data-translate="role-cronela">Fullstack Developer</div>
             </div>
             <div class="info-item">
-                <div class="info-label">Tools</div>
-                <div class="info-value">PHP, CSS, JS, MySql</div>
+                <div class="info-label" data-translate="tools-label">TOOLS</div>
+                <div class="info-value">PHP, CSS, JS, MySQL</div>
             </div>
             <div class="info-item">
-                <div class="info-label">Timeline</div>
-                <div class="info-value">3 Months</div>
+                <div class="info-label" data-translate="timeline-label">TIMELINE</div>
+                <div class="info-value" data-translate="timeline-cronela">3 Months</div>
             </div>
         </div>
     </section>
 
     <section class="process-section">
-        <h2>My Process</h2>
-        <p>Proses pembuatan diawali dengan mencari ide website yang akan berguna bagi banyak orang. Jadi kami membuat website pendidikan, yang di dalamnya berisikan video-video pendidikan dan juga berisi kuis interaktif yang dapat menguji kemampuan pengguna</p>
+        <h2 class="fade-in" data-translate="process-title">My Process</h2>
+        <p class="fade-in" data-translate="cronela-process">Proses pembuatan diawali dengan mencari ide website yang akan berguna bagi banyak orang. Jadi kami membuat website pendidikan, yang di dalamnya berisikan video-video pendidikan dan juga berisi kuis interaktif yang dapat menguji kemampuan pengguna</p>
     </section>
 
     <section class="challenge-section">
-        <h2>The Challenge</h2>
-        <p>Bagian yang cukup menantang dari projek ini adalah ketika membuat section register dan login, selain itu, membuat bagian kuis agar bisa menyimpan skor user juga merupakan tugas yang cukup menantang</p>
+        <h2 class="fade-in" data-translate="challenge-title">The Challenge</h2>
+        <p class="fade-in" data-translate="cronela-challenge">Bagian yang cukup menantang dari projek ini adalah ketika membuat section register dan login, selain itu, membuat bagian kuis agar bisa menyimpan skor user juga merupakan tugas yang cukup menantang</p>
         
         <div class="challenge-images">
-            <div class="challenge-img sketch-img">
-                <img src="../img/cronela/login.png" alt="" width="100%">
+            <div class="challenge-img sketch-img fade-in">
+                <img src="../img/cronela/login.png" alt="Login Page" width="100%">
             </div>
-            <div class="challenge-img sketch-img">
-                <img src="../img/cronela/quiz.png" alt="" width="100%">
+            <div class="challenge-img sketch-img fade-in">
+                <img src="../img/cronela/quiz.png" alt="Quiz Feature" width="100%">
             </div>
         </div>
     </section>
 
     <section class="action-buttons">
-        <a href="https://github.com/Gilang737/Cronela" class="btn btn-secondary">View Source Code</a>
+        <a href="https://github.com/Gilang737/Cronela" class="btn btn-secondary fade-in" data-translate="source-code">View Source Code</a>
     </section>
 
     <section class="project-navigation">
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link fade-in">
             <span>←</span>
-            <span>Previous Project</span>
+            <span data-translate="prev-project">Previous Project</span>
         </a>
-        <a href="vashion.html" class="nav-link">
-            <span>Next Project</span>
+        <a href="vashion.html" class="nav-link next fade-in">
+            <span data-translate="next-project">Next Project</span>
             <span>→</span>
         </a>
     </section>
