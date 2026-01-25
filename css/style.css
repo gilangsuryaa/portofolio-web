@@ -36,7 +36,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Header dengan theme toggle dan language switcher */
 header {
     background: var(--bg-secondary);
     padding: 20px 0;
@@ -98,7 +97,6 @@ nav a:hover {
     color: var(--accent);
 }
 
-/* Theme Toggle & Language Switcher */
 .nav-controls {
     display: flex;
     gap: 15px;
@@ -157,7 +155,6 @@ nav a:hover {
     box-shadow: 0 5px 15px var(--shadow-hover);
 }
 
-/* Animasi scroll */
 .fade-in {
     opacity: 0;
     transform: translateY(30px);

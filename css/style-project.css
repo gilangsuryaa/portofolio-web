@@ -44,7 +44,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Header Styles */
 header {
     background: var(--bg-secondary);
     padding: 20px 0;
@@ -140,7 +139,6 @@ nav {
     border-radius: 18px;
 }
 
-/* Scroll Animations */
 .fade-in {
     opacity: 0;
     transform: translateY(30px);
@@ -174,7 +172,6 @@ nav {
     transform: scale(1);
 }
 
-/* Project Hero */
 .project-hero {
     max-width: 900px;
     margin: 60px auto;
@@ -220,7 +217,6 @@ nav {
     border-radius: 10px;
 }
 
-/* Project Info */
 .project-info {
     max-width: 1200px;
     margin: 60px auto;
@@ -279,7 +275,6 @@ nav {
     color: var(--text-primary);
 }
 
-/* Process Section */
 .process-section {
     max-width: 1200px;
     margin: 80px auto;
@@ -350,7 +345,6 @@ nav {
     border-radius: 10px;
 }
 
-/* Action Buttons */
 .action-buttons {
     max-width: 1200px;
     margin: 60px auto;
@@ -394,7 +388,6 @@ nav {
     box-shadow: 0 5px 20px rgba(255, 167, 38, 0.4);
 }
 
-/* Project Navigation */
 .project-navigation {
     max-width: 1200px;
     margin: 80px auto 40px;
@@ -431,7 +424,6 @@ nav {
     font-size: 20px;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .project-hero h1 {
         font-size: 32px;
