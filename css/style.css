@@ -310,8 +310,8 @@ section h2 {
 
 .skill-tag {
     background: var(--skill-bg);
-    padding: 12px 24px;
-    border-radius: 25px;
+    padding: 5px 10px;
+    border-radius: 12px;
     font-size: 14px;
     color: var(--text-primary);
     transition: all 0.3s ease;
