@@ -134,7 +134,7 @@ function initSmoothScroll() {
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
-                    block: 'start'
+                    block: 'center'
                 });
             }
         });
