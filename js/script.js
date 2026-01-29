@@ -88,12 +88,10 @@ function initTheme() {
     const htmlElement = document.documentElement;
     const themeIcon = themeToggle.querySelector('i');
     
-    // Load saved theme
     const currentTheme = localStorage.getItem('theme') || 'light';
     htmlElement.setAttribute('data-theme', currentTheme);
     themeIcon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     
-    // Event listener untuk toggle theme
     themeToggle.addEventListener('click', () => {
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -120,7 +118,6 @@ function initScrollAnimations() {
         });
     }, observerOptions);
 
-    // Observe all animated elements
     document.querySelectorAll('.fade-in, .slide-left, .slide-right').forEach(el => {
         observer.observe(el);
     });
