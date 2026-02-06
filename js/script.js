@@ -1,3 +1,6 @@
+// ============================================
+// TRANSLATIONS - Halaman HOME
+// ============================================
 const homeTranslations = {
     id: {
         "name": "Gilang Surya Ramadhan",
@@ -53,16 +56,69 @@ const homeTranslations = {
     }
 };
 
+// ============================================
+// HAMBURGER MENU TOGGLE
+// ============================================
+function initHamburgerMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+
+    if (!hamburger || !navMenu) return;
+
+    // Toggle menu
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+    });
+
+    // Close menu when clicking overlay
+    menuOverlay.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.classList.remove('menu-open');
+    });
+
+    // Close menu when clicking nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        });
+    });
+
+    // Close menu with ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+    });
+}
+
+// ============================================
+// LANGUAGE SWITCHER
+// ============================================
 let currentLang = localStorage.getItem('language') || 'id';
 
 function initHomeLanguage() {
     const langToggle = document.getElementById('langToggle');
     if (!langToggle) return;
     
+    // Set initial language
     document.documentElement.lang = currentLang;
     langToggle.textContent = currentLang === 'id' ? 'EN' : 'ID';
     updateHomeTranslations();
     
+    // Event listener untuk toggle bahasa
     langToggle.addEventListener('click', () => {
         currentLang = currentLang === 'id' ? 'en' : 'id';
         localStorage.setItem('language', currentLang);
@@ -81,6 +137,9 @@ function updateHomeTranslations() {
     });
 }
 
+// ============================================
+// THEME TOGGLE
+// ============================================
 function initTheme() {
     const themeToggle = document.getElementById('themeToggle');
     if (!themeToggle) return;
@@ -88,10 +147,12 @@ function initTheme() {
     const htmlElement = document.documentElement;
     const themeIcon = themeToggle.querySelector('i');
     
+    // Load saved theme
     const currentTheme = localStorage.getItem('theme') || 'light';
     htmlElement.setAttribute('data-theme', currentTheme);
     themeIcon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     
+    // Event listener untuk toggle theme
     themeToggle.addEventListener('click', () => {
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -102,6 +163,9 @@ function initTheme() {
     });
 }
 
+// ============================================
+// SCROLL ANIMATIONS
+// ============================================
 function initScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -118,11 +182,15 @@ function initScrollAnimations() {
         });
     }, observerOptions);
 
+    // Observe all animated elements
     document.querySelectorAll('.fade-in, .slide-left, .slide-right').forEach(el => {
         observer.observe(el);
     });
 }
 
+// ============================================
+// SMOOTH SCROLL
+// ============================================
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -131,14 +199,18 @@ function initSmoothScroll() {
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
-                    block: 'center'
+                    block: 'start'
                 });
             }
         });
     });
 }
 
+// ============================================
+// INITIALIZE HOME PAGE
+// ============================================
 document.addEventListener('DOMContentLoaded', () => {
+    initHamburgerMenu();
     initHomeLanguage();
     initTheme();
     initScrollAnimations();

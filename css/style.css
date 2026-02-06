@@ -14,6 +14,7 @@
     --skill-bg: #f0e6d2;
     --shadow: rgba(0,0,0,0.1);
     --shadow-hover: rgba(0,0,0,0.15);
+    --overlay: rgba(0,0,0,0.5);
 }
 
 [data-theme="dark"] {
@@ -26,6 +27,7 @@
     --skill-bg: #3d3d3d;
     --shadow: rgba(0,0,0,0.3);
     --shadow-hover: rgba(0,0,0,0.5);
+    --overlay: rgba(0,0,0,0.7);
 }
 
 body {
@@ -36,6 +38,12 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Prevent scroll when menu is open */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Header */
 header {
     background: var(--bg-secondary);
     padding: 20px 0;
@@ -61,6 +69,7 @@ nav {
     gap: 10px;
     font-weight: bold;
     font-size: 18px;
+    z-index: 1001;
 }
 
 .logo-circle {
@@ -80,6 +89,46 @@ nav {
     transform: rotate(360deg);
 }
 
+/* Hamburger Menu Button */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--text-primary);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Hamburger Animation to X */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Nav Menu */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
 nav ul {
     list-style: none;
     display: flex;
@@ -97,6 +146,7 @@ nav a:hover {
     color: var(--accent);
 }
 
+/* Theme Toggle & Language Switcher */
 .nav-controls {
     display: flex;
     gap: 15px;
@@ -155,6 +205,93 @@ nav a:hover {
     box-shadow: 0 5px 15px var(--shadow-hover);
 }
 
+/* Mobile Menu Styles */
+@media (max-width: 768px) {
+    nav {
+        padding: 0 20px;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 30px 30px;
+        box-shadow: -5px 0 15px var(--shadow);
+        transition: right 0.3s ease;
+        gap: 0;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 0;
+    }
+
+    nav ul li {
+        width: 100%;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--bg-primary);
+    }
+
+    nav ul li:last-child {
+        border-bottom: none;
+    }
+
+    nav ul a {
+        display: block;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .nav-controls {
+        width: 100%;
+        padding: 20px 0;
+        border-top: 1px solid var(--bg-primary);
+        margin-top: 10px;
+        justify-content: flex-start;
+    }
+
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Overlay */
+    .menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--overlay);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .menu-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+}
+
+/* Scroll Animations */
 .fade-in {
     opacity: 0;
     transform: translateY(30px);
@@ -188,6 +325,7 @@ nav a:hover {
     transform: translateX(0);
 }
 
+/* Hero Section */
 .hero {
     max-width: 1200px;
     margin: 80px auto;
@@ -240,6 +378,7 @@ nav a:hover {
     border-radius: 10px;
 }
 
+/* Sections */
 section {
     max-width: 1200px;
     margin: 80px auto;
@@ -310,8 +449,8 @@ section h2 {
 
 .skill-tag {
     background: var(--skill-bg);
-    padding: 5px 10px;
-    border-radius: 12px;
+    padding: 12px 24px;
+    border-radius: 25px;
     font-size: 14px;
     color: var(--text-primary);
     transition: all 0.3s ease;
@@ -369,8 +508,6 @@ section h2 {
 
 .project-link:hover {
     text-decoration: underline;
-    transform: translateX(5px);
-    display: inline-block;
 }
 
 footer {
@@ -412,27 +549,104 @@ footer .social-icons a {
     transform: translateY(-5px) rotate(360deg);
 }
 
+/* Mobile Responsive */
 @media (max-width: 768px) {
+    nav {
+        padding: 0 20px;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 30px 30px;
+        box-shadow: -5px 0 15px var(--shadow);
+        transition: right 0.3s ease;
+        overflow-y: auto;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 0;
+    }
+
+    nav ul li {
+        width: 100%;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--bg-primary);
+    }
+
+    nav ul li:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    nav ul a {
+        display: block;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .nav-controls {
+        width: 100%;
+        padding: 20px 0;
+        border-top: 1px solid var(--bg-primary);
+        margin-top: 10px;
+        justify-content: flex-start;
+    }
+
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--overlay);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .menu-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
     .hero {
         grid-template-columns: 1fr;
         text-align: center;
+        margin: 40px auto;
     }
 
     .hero-content h1 {
-        font-size: 36px;
+        font-size: 32px;
     }
 
     .education-grid,
     .projects-grid {
         grid-template-columns: 1fr;
-    }
-
-    nav ul {
-        gap: 15px;
-        font-size: 14px;
-    }
-
-    .nav-controls {
-        gap: 10px;
     }
 }

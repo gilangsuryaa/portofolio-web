@@ -8,25 +8,38 @@
     <script src="https://kit.fontawesome.com/6fc9985251.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
     <header>
         <nav>
             <div class="logo">
                 <div class="logo-circle">G</div>
                 <span data-translate="name">Gilang Surya Ramadhan</span>
             </div>
-            <ul>
-                <li><a href="#about" data-translate="nav-about">About</a></li>
-                <li><a href="#education" data-translate="nav-education">Education</a></li>
-                <li><a href="#work" data-translate="nav-work">Work</a></li>
-                <li><a href="#contact" data-translate="nav-contact">Contact</a></li>
-                <li class="nav-controls">
-                    <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button class="lang-toggle" id="langToggle" title="Switch Language">EN</button>
-                </li>
-                <li><a href="#contact" class="btn-primary" data-translate="get-in-touch">Get in Touch</a></li>
-            </ul>
+
+            <!-- Hamburger Button -->
+            <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Navigation Menu -->
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#work" data-translate="nav-work">Work</a></li>
+                    <li><a href="#about" data-translate="nav-about">About</a></li>
+                    <li><a href="#education" data-translate="nav-education">Education</a></li>
+                    <li><a href="#contact" data-translate="nav-contact">Contact</a></li>
+                    <li class="nav-controls">
+                        <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button class="lang-toggle" id="langToggle" title="Switch Language">EN</button>
+                    </li>
+                    <li><a href="#contact" class="btn-primary" data-translate="get-in-touch">Get in Touch</a></li>
+                </ul>
+            </div>
         </nav>
     </header>
 
