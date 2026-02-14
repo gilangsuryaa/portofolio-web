@@ -187,10 +187,6 @@ function initScrollAnimations() {
         observer.observe(el);
     });
 }
-
-// ============================================
-// SMOOTH SCROLL
-// ============================================
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -199,16 +195,12 @@ function initSmoothScroll() {
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
-                    block: 'start'
+                    block: 'center'
                 });
             }
         });
     });
 }
-
-// ============================================
-// INITIALIZE HOME PAGE
-// ============================================
 document.addEventListener('DOMContentLoaded', () => {
     initHamburgerMenu();
     initHomeLanguage();
