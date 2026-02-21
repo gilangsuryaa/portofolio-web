@@ -11,7 +11,7 @@ const homeTranslations = {
         "get-in-touch": "Hubungi Saya",
         "hero-title": "Gilang Surya Ramadhan - Specialist Programmer",
         "hero-description": "Bersemangat dalam bidang teknologi, selalu mengikuti perkembangan terbaru dan berusaha memberikan solusi terbaik melalui pemrograman.",
-        "download-cv": "Download CV",
+        "download-cv": "Unduh CV",
         "about-title": "Tentang Saya",
         "about-description": "Saya adalah seorang siswa SMK Telkom Purwokerto, saya saat ini merupakan seorang siswa kelas 11. Di SMK Telkom Purwokerto saya belajar berbagai hal yang berkaitan dengan teknologi seperti mengembangkan website, aplikasi, dan mempelajari tentang machine learning. Pernah membuat website menggunakan HTML, CSS, dan JavaScript, serta mempelajari Laravel.",
         "education-title": "Pendidikan",
@@ -163,9 +163,6 @@ function initTheme() {
     });
 }
 
-// ============================================
-// SCROLL ANIMATIONS
-// ============================================
 function initScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
