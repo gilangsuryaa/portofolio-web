@@ -9,6 +9,7 @@
     --bg-secondary: #ffffff;
     --text-primary: #333;
     --text-secondary: #666;
+    --text-third : #999;
     --accent: #ff5757;
     --accent-hover: #ff3838;
     --skill-bg: #f0e6d2;
@@ -129,16 +130,20 @@ nav ul {
 }
 
 nav a {
-    text-decoration: none;
     color: var(--text-secondary);
-    transition: color 0.3s;
+    text-decoration: none;
+    background-image: linear-gradient(to right, #ff5757, #ff5757);
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    background-position: left bottom;
+    transition: background-size 0.3s ease;
 }
 
 nav a:hover {
-    color: var(--accent);
+    color: var(--text-third);
+    background-size: 100% 2px;
 }
 
-/* Theme Toggle & Language Switcher */
 .nav-controls {
     display: flex;
     gap: 15px;
