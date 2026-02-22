@@ -541,10 +541,9 @@ footer .social-icons a {
 .social-icon:hover {
     background: var(--accent);
     color: white;
-    transform: translateY(-5px) rotate(360deg);
+    transform: scale(1.1, 1.1);
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
     nav {
         padding: 0 20px;
