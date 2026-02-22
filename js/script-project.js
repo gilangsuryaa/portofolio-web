@@ -1,8 +1,7 @@
 const projectTranslations = {
     id: {
         // Umum untuk semua halaman proyek
-        "name": "Gilang Surya Ramadhan",
-        "back": "Kembali ke Portfolio",
+        "name": "Gilang Surya Ramadhan",    
         "overview-title": "Gambaran Proyek",
         "role-label": "PERAN SAYA",
         "tools-label": "ALAT",
@@ -28,11 +27,18 @@ const projectTranslations = {
         "role-vashion": "Fullstack Developer",
         "vashion-overview": "Mengembangkan platform belanja pakaian daring yang memanfaatkan komponen pengembangan web fundamental seperti HTML, CSS, dan JavaScript, terintegrasi dengan database menggunakan SQL dan PHP.",
         "vashion-process": "Kami memulai dengan riset pasar dan analisis kompetitor untuk memahami kebutuhan pengguna. Kemudian merancang UI/UX yang modern dan user-friendly, serta mengimplementasikan fitur-fitur e-commerce seperti shopping cart, wishlist, dan payment gateway.",
-        "vashion-challenge": "Tantangan terbesar adalah mengintegrasikan payment gateway dan membuat sistem inventory real-time yang dapat menangani banyak transaksi secara bersamaan. Selain itu, optimasi performa untuk loading time yang cepat juga menjadi fokus utama."
+        "vashion-challenge": "Tantangan terbesar adalah mengintegrasikan payment gateway dan membuat sistem inventory real-time yang dapat menangani banyak transaksi secara bersamaan. Selain itu, optimasi performa untuk loading time yang cepat juga menjadi fokus utama.",
+
+        //portfolio
+        "portfolio-title": "Website Portfolio",
+        "timeline-portfolio": "Masih Berlanjut",
+        "role-portfolio": "Fullstack Developer",
+        "portfolio-overview": "Mengembangkan website portfolio yang berisi informasi tentang diri saya, dan projek-projek yang pernah saya buat dengan menggunakan html, css, dan javascript.",
+        "portfolio-process": "Saya memulai dengan mencari refrensi untuk membuat website portfolio ini, dari komunitas, github, dan video-video youtube. Saya akhirnya bisa membuat sebuah website portfolio yang menampilkan informasi tentang diri saya dalam tampilan yang ringkas.",
+        "portfolio-challenge": "Tantangan terbesar dalam mengembangkan website ini adalah mencari refrensi-refrensi yang cocok untuk saya terapkan dalam website ini."
     },
     en: {
         "name": "Gilang Surya Ramadhan",
-        "back": "Back to Portfolio",
         "overview-title": "Project Overview",
         "role-label": "MY ROLE",
         "role-value": "Fullstack Developer",
@@ -57,7 +63,14 @@ const projectTranslations = {
         "role-vashion": "Fullstack Developer",
         "vashion-overview": "Developing an online clothing shopping platform utilizing fundamental web development components such as HTML, CSS, and JavaScript, integrated with a database using SQL and PHP.",
         "vashion-process": "We started with market research and competitor analysis to understand user needs. Then designed a modern and user-friendly UI/UX, and implemented e-commerce features such as shopping cart, wishlist, and payment gateway.",
-        "vashion-challenge": "The biggest challenge was integrating the payment gateway and creating a real-time inventory system that can handle many transactions simultaneously. In addition, performance optimization for fast loading times was also a major focus."
+        "vashion-challenge": "The biggest challenge was integrating the payment gateway and creating a real-time inventory system that can handle many transactions simultaneously. In addition, performance optimization for fast loading times was also a major focus.",
+
+        "portfolio-title": "Website Portfolio",
+        "timeline-portfolio": "On Going",
+        "role-portfolio": "Fullstack Developer",
+        "portfolio-overview": "Developing a portfolio website that contains information about myself and the projects I have created using HTML, CSS and JavaScript.",
+        "portfolio-process": "I started by looking for resources to create this portfolio website, from communities, GitHub, and YouTube videos. I was finally able to create a portfolio website that displays information about myself in a concise manner.",
+        "portfolio-challenge": "The biggest challenge in developing this website was finding suitable references for me to apply to this website."
     }
 };
 
