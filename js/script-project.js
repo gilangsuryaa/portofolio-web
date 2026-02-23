@@ -33,7 +33,7 @@ const projectTranslations = {
         "portfolio-title": "Website Portfolio",
         "timeline-portfolio": "Masih Berlanjut",
         "role-portfolio": "Fullstack Developer",
-        "portfolio-overview": "Mengembangkan website portfolio yang berisi informasi tentang diri saya, dan projek-projek yang pernah saya buat dengan menggunakan html, css, dan javascript.",
+        "portfolio-overview": "Mengembangkan website portfolio yang berisi informasi tentang diri saya, dan projek-projek yang pernah saya buat dengan menggunakan HTML, CSS, dan JavaScript.",
         "portfolio-process": "Saya memulai dengan mencari refrensi untuk membuat website portfolio ini, dari komunitas, github, dan video-video youtube. Saya akhirnya bisa membuat sebuah website portfolio yang menampilkan informasi tentang diri saya dalam tampilan yang ringkas.",
         "portfolio-challenge": "Tantangan terbesar dalam mengembangkan website ini adalah mencari refrensi-refrensi yang cocok untuk saya terapkan dalam website ini."
     },
