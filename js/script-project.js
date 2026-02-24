@@ -14,7 +14,8 @@ const projectTranslations = {
         "next-project": "Proyek Selanjutnya",
         
         // Spesifik CRONELA
-        "cronela-title": "Website Pendidikan",
+        "cronela-title": "CRONELA",
+        "cronela-category": "Website Pendidikan",
         "timeline-cronela": "3 Bulan",
         "role-cronela": "Fullstack Developer",
         "cronela-overview": "Saya dan tim mengembangkan sebuah website pendidikan online yang berisi video-video pembelajaran dan juga kuis interaktif.",
@@ -22,7 +23,8 @@ const projectTranslations = {
         "cronela-challenge": "Bagian yang cukup menantang dari projek ini adalah ketika membuat section register dan login, selain itu, membuat bagian kuis agar bisa menyimpan skor user juga merupakan tugas yang cukup menantang",
         
         // Spesifik VASHION
-        "vashion-title": "Website E-Commerce",
+        "vashion-title": "VASHION",
+        "vashion-category": "Website E-Commerce",
         "timeline-vashion": "2 Bulan",
         "role-vashion": "Fullstack Developer",
         "vashion-overview": "Mengembangkan platform belanja pakaian daring yang memanfaatkan komponen pengembangan web fundamental seperti HTML, CSS, dan JavaScript, terintegrasi dengan database menggunakan SQL dan PHP.",
@@ -31,11 +33,21 @@ const projectTranslations = {
 
         //portfolio
         "portfolio-title": "Website Portfolio",
+        "portfolio-category": "Website Portfolio",
         "timeline-portfolio": "Masih Berlanjut",
         "role-portfolio": "Fullstack Developer",
         "portfolio-overview": "Mengembangkan website portfolio yang berisi informasi tentang diri saya, dan projek-projek yang pernah saya buat dengan menggunakan HTML, CSS, dan JavaScript.",
         "portfolio-process": "Saya memulai dengan mencari refrensi untuk membuat website portfolio ini, dari komunitas, github, dan video-video youtube. Saya akhirnya bisa membuat sebuah website portfolio yang menampilkan informasi tentang diri saya dalam tampilan yang ringkas.",
-        "portfolio-challenge": "Tantangan terbesar dalam mengembangkan website ini adalah mencari refrensi-refrensi yang cocok untuk saya terapkan dalam website ini."
+        "portfolio-challenge": "Tantangan terbesar dalam mengembangkan website ini adalah mencari refrensi-refrensi yang cocok untuk saya terapkan dalam website ini.",
+
+        //mycelengan
+        "mycelengan-title": "My Celengan",
+        "mycelengan-category": "Aplikasi Manajemen Keuangan",
+        "timeline-mycelengan": "2 Bulan",
+        "role-mycelengan": "Front-End Developer",
+        "mycelengan-overview": "Mengembangkan aplikasi mobile android berbasis kotlin yang berfungsi untuk mencatat pengeluaran dan pemasukan pengguna, serta dengan fitur target agar pengguna termotivasi untuk menabung.",
+        "mycelengan-process": "Kami memulai dengan mencari masalah yang umum terjadi di kehidupan sehari-hari. Kami pun menyadari, zaman sekarang dengan canggihnya metode pembayaran yang ada, orang-orang akan lebih mudah mengeluarkan uang yang mereka punya. Karena itulah, My Celengan hadir untuk membantu user mencatat pengeluaran dan pemasukan mereka. Selain itu, aplikasi ini memiliki fitur untuk membuat target sesuatu yang ingin dibeli untuk meningkatkan motivasi user.",
+        "mycelengan-challenge": "Tantangan terbesar dalam mengembangkan aplikasi My Celengan adalah di bagian interface. Bagaimana cara kita untuk merancang antarmuka yang memudahkan serta bisa menarik perhatian pengguna agar bisa diguanakan oleh semua kalangan. Selain itu, membuat database untuk menyimpan catatan pengeluaran, pemasukan, dan data-data lainnya juga merupakan sebuah tantangan tersendiri."
     },
     en: {
         "name": "Gilang Surya Ramadhan",
@@ -51,26 +63,37 @@ const projectTranslations = {
         "prev-project": "Previous Project",
         "next-project": "Next Project",
         
-        "cronela-title": "Education Website",
+        "cronela-title": "CRONELA",
+        "cronela-category": "Education Website",
         "timeline-cronela": "3 Months",
         "role-cronela": "Fullstack Developer",
         "cronela-overview": "My team and I developed an online education website that contains learning videos and interactive quizzes.",
         "cronela-process": "The creation process began with finding a website idea that would be useful for many people. So we created an educational website, which contains educational videos and also contains interactive quizzes that can test users' abilities",
         "cronela-challenge": "The quite challenging part of this project was when creating the register and login section, besides that, making the quiz section able to save user scores was also a quite challenging task",
         
-        "vashion-title": "E-Commerce Website",
+        "vashion-title": "VASHION",
+        "vashion-category": "E-Commerce Website",
         "timeline-vashion": "2 Months",
         "role-vashion": "Fullstack Developer",
         "vashion-overview": "Developing an online clothing shopping platform utilizing fundamental web development components such as HTML, CSS, and JavaScript, integrated with a database using SQL and PHP.",
         "vashion-process": "We started with market research and competitor analysis to understand user needs. Then designed a modern and user-friendly UI/UX, and implemented e-commerce features such as shopping cart, wishlist, and payment gateway.",
         "vashion-challenge": "The biggest challenge was integrating the payment gateway and creating a real-time inventory system that can handle many transactions simultaneously. In addition, performance optimization for fast loading times was also a major focus.",
 
-        "portfolio-title": "Website Portfolio",
+        "portfolio-title": "Portfolio Website",
+        "portfolio-category": "Portfolio Website",
         "timeline-portfolio": "On Going",
         "role-portfolio": "Fullstack Developer",
         "portfolio-overview": "Developing a portfolio website that contains information about myself and the projects I have created using HTML, CSS and JavaScript.",
         "portfolio-process": "I started by looking for resources to create this portfolio website, from communities, GitHub, and YouTube videos. I was finally able to create a portfolio website that displays information about myself in a concise manner.",
-        "portfolio-challenge": "The biggest challenge in developing this website was finding suitable references for me to apply to this website."
+        "portfolio-challenge": "The biggest challenge in developing this website was finding suitable references for me to apply to this website.",
+
+        "mycelengan-title": "My Celengan",
+        "mycelengan-category": "Financial Management Application",
+        "timeline-mycelengan": "2 Months",
+        "role-mycelengan": "Front-End Developer",
+        "mycelengan-overview": "Developing a Kotlin-based Android mobile application that functions to record user expenses and income, as well as with a target feature to motivate users to save.",
+        "mycelengan-process": "We started by identifying common problems in everyday life. We realized that with today's sophisticated payment methods, it's easier for people to spend their money. That's why My Celengan is here to help users track their income and expenses. Furthermore, the app includes a feature for setting purchase goals to boost user motivation.",
+        "mycelengan-challenge": "The biggest challenge in developing the My Celengan app was the interface. How could we design an interface that was easy to use and engaging enough for everyone to use? Furthermore, creating a database to store records of expenses, income, and other data was also a challenge."
     }
 };
 

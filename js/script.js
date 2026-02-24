@@ -1,6 +1,3 @@
-// ============================================
-// TRANSLATIONS - Halaman HOME
-// ============================================
 const homeTranslations = {
     id: {
         "name": "Gilang Surya Ramadhan",
@@ -26,6 +23,8 @@ const homeTranslations = {
         "project2-desc": "Mengembangkan platform belanja pakaian daring yang memanfaatkan komponen pengembangan web fundamental seperti HTML, CSS, dan JavaScript, terintegrasi dengan database menggunakan SQL dan PHP.",
         "project3-title": "Website Portofolio",
         "project3-desc": "Mengembangkan website portfolio yang berisi informasi tentang diri saya, dan projek-projek yang pernah saya buat dengan menggunakan HTML, CSS, dan JavaScript.",
+        "project4-title": "My Celengan",
+        "project4-desc": "Mengembangkan aplikasi mobile android berbasis kotlin yang berfungsi untuk mencatat pengeluaran dan pemasukan pengguna, serta dengan fitur target agar pengguna termotivasi untuk menabung.",
         "view-case": "Lihat Studi Kasus →",
         "skills-title": "Keahlian",
         "footer-text": "© 2025 Gilang Surya Ramadhan. Hak Cipta Dilindungi."
@@ -54,6 +53,8 @@ const homeTranslations = {
         "project2-desc": "Developing an online clothing shopping platform utilizing fundamental web development components such as HTML, CSS, and JavaScript, integrated with a database using SQL and PHP.",
         "project3-title": "Portfolio Website",
         "project3-desc": "Developing a portfolio website that contains information about myself and the projects I have created using HTML, CSS and JavaScript.",
+        "project4-title": "My Celengan",
+        "project4-desc": "Developing a Kotlin-based Android mobile application that functions to record user expenses and income, as well as with a target feature to motivate users to save.",
         "view-case": "View Case Study →",
         "skills-title": "Skills",
         "footer-text": "© 2025 Gilang Surya Ramadhan. All Rights Reserved."

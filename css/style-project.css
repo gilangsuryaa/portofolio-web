@@ -72,21 +72,14 @@ nav {
 }
 
 .logo-icon {
-    width: 30px;
-    height: 30px;
-    background: var(--accent);
-    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
     transition: transform 0.3s ease;
 }
 
 .logo-icon:hover {
-    transform: rotate(360deg);
+    transform: scale(1.1,1.1);
 }
 
 .nav-right {
