@@ -234,7 +234,7 @@ var form = document.getElementById("form");
       }
     }).then(response => {
       if (response.ok) {
-        window.location.href = "../thanks.html"; 
+        window.location.href = "thanks.html"; 
       } else {
         response.json().then(data => {
           if (Object.hasOwn(data, 'errors')) {
