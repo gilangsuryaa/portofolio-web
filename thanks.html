@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="5;url=index.html">
+    <title>Terima Kasih!</title>
+    <script src="https://kit.fontawesome.com/6fc9985251.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/style-thanks.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Success Icon -->
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+
+        <!-- Main Content -->
+        <h1 data-translate="title">Pesan Terkirim!</h1>
+        <p data-translate="message">Terima kasih sudah menghubungi saya. Pesan Anda telah berhasil diterima.</p>
+
+        <div class="timer-section">
+            <p data-translate="redirect-text">Mengarahkan kembali dalam</p>
+            <span id="countdown" class="timer">3</span>
+            <span class="timer-label" data-translate="seconds">detik</span>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <a href="index.html" class="back-button" data-translate="back-button">Kembali Sekarang</a>
+    </div>
+
+    <script>
+        const translations = {
+            id: {
+                "title": "Pesan Terkirim!",
+                "message": "Terima kasih sudah menghubungi saya. Pesan Anda telah berhasil diterima.",
+                "redirect-text": "Mengarahkan kembali dalam",
+                "seconds": "detik",
+                "back-button": "Kembali Sekarang"
+            },
+            en: {
+                "title": "Message Sent!",
+                "message": "Thank you for contacting me. Your message has been successfully received.",
+                "redirect-text": "Redirecting in",
+                "seconds": "seconds",
+                "back-button": "Back Now"
+            }
+        };
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        let currentLang = localStorage.getItem('language') || 'id';
+        document.documentElement.lang = currentLang;
+
+        function updateTranslations() {
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
+                }
+            });
+        }
+
+        updateTranslations();
+
+        let seconds = 3;
+        const display = document.querySelector('#countdown');
+        
+        const timer = setInterval(() => {
+            seconds--;
+            display.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(timer);
+                display.textContent = '0';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

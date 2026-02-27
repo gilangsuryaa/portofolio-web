@@ -27,10 +27,9 @@ const homeTranslations = {
         "project4-desc": "Mengembangkan aplikasi mobile android berbasis kotlin yang berfungsi untuk mencatat pengeluaran dan pemasukan pengguna, serta dengan fitur target agar pengguna termotivasi untuk menabung.",
         "view-case": "Lihat Studi Kasus →",
         "skills-title": "Keahlian",
+        "contact-title": "Hubungi Saya",
         "name-form": "Nama Kamu",
         "message-form": "Pesan",
-        "desc-email-form": "Ini akan membantu saya untuk membalas pesan kamu!",
-        "desc-message-form": "Apa yang ingin kamu diskusikan?",
         "submit": "Kirim",
         "footer-text": "© 2026 Gilang Surya Ramadhan. Hak Cipta Dilindungi."
     },
@@ -62,10 +61,9 @@ const homeTranslations = {
         "project4-desc": "Developing a Kotlin-based Android mobile application that functions to record user expenses and income, as well as with a target feature to motivate users to save.",
         "view-case": "View Case Study →",
         "skills-title": "Skills",
+        "contact-title": "Contact Me",
         "name-form": "Your Name",
         "message-form": "Message",
-        "desc-email-form": "This will help me to reply to your message!",
-        "desc-message-form": "What would you like to discuss?",
         "submit": "Send",
         "footer-text": "© 2026 Gilang Surya Ramadhan. All Rights Reserved."
     }
