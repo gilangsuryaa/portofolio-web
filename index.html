@@ -124,7 +124,7 @@
     </section>
 
     <section>
-        <h2 class="fade-in" data-translate="skills-title">Skills</h2>
+        <h2 class="fade-in" data-translate="skills-title">Keahlian</h2>
         <div class="skills-grid">
             <span class="skill-tag fade-in"><img src="https://skillicons.dev/icons?i=figma" alt="My Skills"/></span>
             <span class="skill-tag fade-in"><img src="https://skillicons.dev/icons?i=html" alt="My Skills"/></span>
@@ -135,6 +135,39 @@
             <span class="skill-tag fade-in"><img src="https://skillicons.dev/icons?i=git" alt="My Skills"/></span>
             <span class="skill-tag fade-in"><img src="https://skillicons.dev/icons?i=python" alt="My Skills"/></span>
         </div>
+    </section>
+
+    <section id="form">
+        <h2 class="fade-in" data-translate="contact-title">Hubungi Saya</h2>
+        <form
+            action="https://formspree.io/f/xjgezbqp"
+            method="POST"
+            >
+            <div class="fs-field">
+                <label class="fs-label" for="name" data-translate="name-form">Nama Kamu</label>
+                <input class="fs-input" id="name" name="name" required />
+            </div>
+            <div class="fs-field">
+                <label class="fs-label" for="email">Email</label>
+                <input class="fs-input" id="email" name="email" required />
+                <p class="fs-description" data-translate="desc-email-form">
+                Ini akan membantu saya untuk membalas pesan kamu!
+                </p>
+            </div>
+            <div class="fs-field">
+                <label class="fs-label" for="message" data-translate="message-form">Pesan</label>
+                <textarea
+                class="fs-textarea"
+                id="message"
+                name="message"
+                required
+                ></textarea>
+                <p class="fs-description" data-translate="desc-message-form">Apa yang ingin kamu diskusikan?</p>
+            </div>
+            <div class="fs-button-group">
+                <button class="fs-button" type="submit" data-translate="submit">Kirim</button>
+            </div>
+        </form>
     </section>
 
     <footer id="contact">
