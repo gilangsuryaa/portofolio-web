@@ -299,6 +299,10 @@ export async function getContactMessages(): Promise<ContactMessage[]> {
 
 export async function submitContactMessage(message: { name: string; email: string; message: string }): Promise<{ success: boolean; error?: string }> {
   const supabase = getSupabaseBrowserClient();
+
+  // Supabase aktif: pesan baru dianggap terkirim kalau benar-benar masuk database.
+  // Jangan jatuh ke localStorage — pesannya akan tersimpan di browser pengunjung
+  // dan tidak akan pernah sampai ke halaman admin.
   if (supabase) {
     try {
       const { error } = await supabase.from('contact_messages').insert([
@@ -313,10 +317,13 @@ export async function submitContactMessage(message: { name: string; email: strin
       return { success: true };
     } catch (err: any) {
       console.error('Supabase submit message error:', err);
-      // Fallback saving locally if remote insert fails
+      // Pesan error aslinya sengaja tidak diteruskan ke pengunjung agar detail
+      // internal tidak bocor; ContactForm menampilkan teks ramah dwibahasa.
+      return { success: false };
     }
   }
 
+  // Supabase belum dikonfigurasi — mode lokal untuk development.
   const current = getStoredData<ContactMessage[]>('messages', []);
   const newMessage: ContactMessage = {
     id: `msg-${Date.now()}`,
