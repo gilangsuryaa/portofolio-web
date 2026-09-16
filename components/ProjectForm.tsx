@@ -278,7 +278,7 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
           2. Metadata Detail & Peran
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
               Peran (ID)
@@ -294,20 +294,22 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
 
           <div>
             <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
-              Tools / Teknologi Digunakan
+              Peran (EN)
             </label>
             <input
               type="text"
-              value={formData.tools || ''}
-              onChange={(e) => handleChange('tools', e.target.value)}
-              placeholder="PHP, CSS, JS, MySQL"
+              value={formData.role_en || ''}
+              onChange={(e) => handleChange('role_en', e.target.value)}
+              placeholder="Fullstack Developer"
               className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
+        </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
-              Timeline / Durasi
+              Timeline / Durasi (ID)
             </label>
             <input
               type="text"
@@ -317,6 +319,32 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
               className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+              Timeline / Durasi (EN)
+            </label>
+            <input
+              type="text"
+              value={formData.timeline_en || ''}
+              onChange={(e) => handleChange('timeline_en', e.target.value)}
+              placeholder="3 Months"
+              className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+            Tools / Teknologi Digunakan
+          </label>
+          <input
+            type="text"
+            value={formData.tools || ''}
+            onChange={(e) => handleChange('tools', e.target.value)}
+            placeholder="PHP, CSS, JS, MySQL"
+            className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -367,12 +395,36 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
 
           <div>
             <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+              Proses Pengerjaan (EN)
+            </label>
+            <textarea
+              rows={4}
+              value={formData.process_en || ''}
+              onChange={(e) => handleChange('process_en', e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
               Tantangan & Solusi (ID)
             </label>
             <textarea
               rows={4}
               value={formData.challenge_id || ''}
               onChange={(e) => handleChange('challenge_id', e.target.value)}
+              className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+              Tantangan & Solusi (EN)
+            </label>
+            <textarea
+              rows={4}
+              value={formData.challenge_en || ''}
+              onChange={(e) => handleChange('challenge_en', e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
             />
           </div>
