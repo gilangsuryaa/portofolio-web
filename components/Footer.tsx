@@ -33,7 +33,6 @@ export default function Footer({ profile }: FooterProps) {
             &copy; {currentYear} {name}
           </p>
           <span className="hidden sm:inline text-neutral-300 dark:text-neutral-700">•</span>
-          <p>{t('Didesain dengan gaya Minimalist Bento Grid', 'Designed with Minimalist Bento Grid layout')}</p>
         </div>
 
         {/* Social Icons & Back to Top */}
