@@ -85,6 +85,7 @@ export default function AdminLoginPage() {
               <div className="relative">
                 <input
                   type="password"
+                  required={isSupabase}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"

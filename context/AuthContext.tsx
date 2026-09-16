@@ -26,28 +26,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const supabase = getSupabaseBrowserClient();
 
     if (supabase && isSupabaseConfigured) {
-      // Check active Supabase session
+      // Supabase aktif: hanya sesi Supabase yang diakui sebagai login sah.
+      // Sisa sesi lokal dari mode development dibuang, agar tidak bisa dipakai
+      // menembus halaman admin tanpa autentikasi.
+      try {
+        localStorage.removeItem('porto_admin_session');
+      } catch {
+        // localStorage tidak tersedia — abaikan
+      }
+
       supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user) {
-          setUser({ id: session.user.id, email: session.user.email });
-        } else {
-          checkLocalSession();
-        }
+        setUser(session?.user ? { id: session.user.id, email: session.user.email } : null);
         setLoading(false);
       });
 
       const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-        if (session?.user) {
-          setUser({ id: session.user.id, email: session.user.email });
-        } else {
-          checkLocalSession();
-        }
+        setUser(session?.user ? { id: session.user.id, email: session.user.email } : null);
       });
 
       return () => {
         subscription.unsubscribe();
       };
     } else {
+      // Supabase belum dikonfigurasi — mode lokal untuk development.
       checkLocalSession();
       setLoading(false);
     }
@@ -69,7 +70,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (email: string, password?: string): Promise<{ success: boolean; error?: string }> => {
     const supabase = getSupabaseBrowserClient();
 
-    if (supabase && isSupabaseConfigured && password) {
+    // Supabase aktif: autentikasi asli adalah satu-satunya jalur masuk.
+    // Setiap cabang di bawah ini harus return, jangan sampai jatuh ke mode lokal.
+    if (supabase && isSupabaseConfigured) {
+      if (!password) {
+        return { success: false, error: 'Kata sandi wajib diisi.' };
+      }
+
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
@@ -84,12 +91,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser({ id: data.user.id, email: data.user.email });
           return { success: true };
         }
+
+        return { success: false, error: 'Login gagal. Coba lagi beberapa saat lagi.' };
       } catch (err: any) {
         return { success: false, error: err.message };
       }
     }
 
-    // Default / Demo fallback login
+    // Supabase belum dikonfigurasi — mode lokal untuk development.
     const adminUser = { id: 'admin-local-1', email: email || 'admin@porto.dev' };
     setUser(adminUser);
     localStorage.setItem('porto_admin_session', JSON.stringify(adminUser));
