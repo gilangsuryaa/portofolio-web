@@ -32,7 +32,6 @@ export default function Footer({ profile }: FooterProps) {
           <p className="font-medium text-neutral-700 dark:text-neutral-300">
             &copy; {currentYear} {name}
           </p>
-          <span className="hidden sm:inline text-neutral-300 dark:text-neutral-700">•</span>
         </div>
 
         {/* Social Icons & Back to Top */}
