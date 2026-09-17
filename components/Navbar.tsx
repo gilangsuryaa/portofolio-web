@@ -96,19 +96,43 @@ export default function Navbar({ profile }: NavbarProps) {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
-            className="md:hidden p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
+            aria-expanded={mobileOpen}
+            className="md:hidden p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors"
           >
-            {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            {/* Kedua ikon ditumpuk agar bisa saling memudar, bukan berganti mendadak */}
+            <span className="relative block w-4 h-4">
+              <Menu
+                className={`absolute inset-0 w-4 h-4 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                  mobileOpen ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'
+                }`}
+              />
+              <X
+                className={`absolute inset-0 w-4 h-4 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                  mobileOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'
+                }`}
+              />
+            </span>
           </button>
 
         </div>
       </nav>
 
-      {/* Mobile Drawer */}
-      {mobileOpen && (
-        <div className="md:hidden fixed inset-0 top-20 bg-black/40 backdrop-blur-md z-40 px-4" onClick={closeMobile}>
+      {/* Mobile Drawer — selalu ter-mount agar transisinya bisa berjalan.
+          Saat tertutup: transparan, tidak bisa diklik, dan disembunyikan dari
+          pembaca layar serta urutan tab lewat `invisible`. */}
+      <div
+        className={`md:hidden fixed inset-0 top-20 z-40 px-4 bg-black/40 backdrop-blur-md transition-[opacity,visibility] duration-300 ease-out motion-reduce:transition-none ${
+          mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={closeMobile}
+        aria-hidden={!mobileOpen}
+      >
           <div
-            className="bento-card bg-white dark:bg-[#121215] p-6 flex flex-col gap-4 shadow-2xl rounded-3xl mt-2 border border-black/5 dark:border-white/10"
+            className={`bento-card bg-white dark:bg-[#121215] p-6 flex flex-col gap-4 shadow-2xl rounded-3xl mt-2 border border-black/5 dark:border-white/10 transition-all duration-300 ease-out motion-reduce:transition-none ${
+              mobileOpen
+                ? 'opacity-100 translate-y-0 scale-100'
+                : 'opacity-0 -translate-y-4 scale-95'
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <Link href="/#about" onClick={closeMobile} className="text-sm font-medium text-neutral-800 dark:text-neutral-200 py-1">
@@ -134,8 +158,7 @@ export default function Navbar({ profile }: NavbarProps) {
               {t('Hubungi Saya ↵', 'Get in Touch ↵')}
             </Link>
           </div>
-        </div>
-      )}
+      </div>
     </header>
   );
 }
