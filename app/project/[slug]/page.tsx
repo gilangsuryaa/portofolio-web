@@ -1,14 +1,15 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
-import { getProjectBySlug, getProjects, getProfile } from '@/lib/data-service';
+import { getProjectBySlug, getProjects, getProfile, getCachedProjectBySlug } from '@/lib/data-service';
 import { Project, Profile } from '@/lib/types';
 import { initialProjects, initialProfile } from '@/lib/supabase/fallback-data';
+import { coverTransitionName, isViewTransitionNavigation } from '@/lib/view-transition';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Home, Sun, Moon, Github, Globe, Wrench, Clock, UserCheck, Layers } from 'lucide-react';
 
 export default function ProjectCaseStudyPage() {
@@ -18,10 +19,24 @@ export default function ProjectCaseStudyPage() {
   const { lang, toggleLang, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
 
-  const [project, setProject] = useState<Project | null>(null);
+  // Saat pengunjung datang dari beranda, proyeknya sudah ada di cache memori.
+  // Render pertama memakai data itu agar kontennya — termasuk gambar cover yang
+  // menjadi sasaran shared element transition — sudah ada di DOM saat browser
+  // mengambil snapshot. Pada kunjungan langsung cache kosong, spinner tampil
+  // seperti sebelumnya.
+  const cached = useMemo(() => (slug ? getCachedProjectBySlug(slug) : null), [slug]);
+
+  const [project, setProject] = useState<Project | null>(cached);
   const [allProjects, setAllProjects] = useState<Project[]>(initialProjects);
   const [profile, setProfile] = useState<Profile>(initialProfile);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!cached);
+
+  // Sama seperti di template.tsx: diputuskan sekali saat mount. Saat datang dari
+  // beranda lewat View Transition, cover sudah memuai sendiri — menambah animasi
+  // masuk di atasnya justru membuat konten berkedip setelah transisi berakhir.
+  const [contentEnterClass] = useState(() =>
+    isViewTransitionNavigation() ? '' : 'animate-content-enter'
+  );
 
   useEffect(() => {
     async function load() {
@@ -47,14 +62,16 @@ export default function ProjectCaseStudyPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bento-bg)]">
-        <div className="w-8 h-8 border-3 border-neutral-400 border-t-neutral-900 dark:border-t-white rounded-full animate-spin" />
+        <div className="animate-spinner-in">
+          <div className="w-8 h-8 border-3 border-neutral-400 border-t-neutral-900 dark:border-t-white rounded-full animate-spin" />
+        </div>
       </div>
     );
   }
 
   if (!project) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--bento-bg)] p-6 text-center">
+      <div className={`min-h-screen flex flex-col items-center justify-center bg-[var(--bento-bg)] p-6 text-center ${contentEnterClass}`}>
         <h1 className="text-2xl font-bold mb-4">{t('Proyek Tidak Ditemukan', 'Project Not Found')}</h1>
         <Link
           href="/"
@@ -78,8 +95,8 @@ export default function ProjectCaseStudyPage() {
   const challenge = lang === 'id' ? project.challenge_id : project.challenge_en;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bento-bg)] text-[var(--bento-text)]">
-      
+    <div className={`min-h-screen flex flex-col bg-[var(--bento-bg)] text-[var(--bento-text)] ${contentEnterClass}`}>
+
       {/* Floating Navbar */}
       <header className="sticky top-4 z-50 max-w-5xl mx-auto px-4 sm:px-6 w-full">
         <div className="bento-card px-4 sm:px-6 py-3 bg-white/80 dark:bg-[#121215]/80 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-lg shadow-black/[0.03] dark:shadow-black/40 flex items-center justify-between rounded-full">
@@ -92,21 +109,47 @@ export default function ProjectCaseStudyPage() {
             </span>
           </Link>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 transition"
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-            </button>
-            <button
-              onClick={toggleLang}
-              aria-label="Toggle language"
-              className="px-2.5 py-1 text-xs font-semibold rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200"
-            >
-              {lang === 'id' ? 'EN' : 'ID'}
-            </button>
+           <div className="flex items-center gap-2">
+             <button
+               onClick={(e) => toggleTheme({ x: e.clientX, y: e.clientY })}
+               aria-label="Toggle theme"
+               className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 transition"
+             >
+               <span className="relative block w-4 h-4">
+                 <Moon
+                   className={`absolute inset-0 w-4 h-4 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                     theme === 'dark' ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'
+                   }`}
+                 />
+                 <Sun
+                   className={`absolute inset-0 w-4 h-4 text-amber-400 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                     theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'
+                   }`}
+                 />
+               </span>
+             </button>
+             <button
+               onClick={toggleLang}
+               aria-label="Toggle language"
+               className="px-2.5 py-1 text-xs font-semibold rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200"
+             >
+               <span className="relative block w-full h-full">
+                 <span
+                   className={`inline-block transition-all duration-300 ease-out motion-reduce:transition-none ${
+                     lang === 'id' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75 absolute'
+                   }`}
+                 >
+                   EN
+                 </span>
+                 <span
+                   className={`inline-block transition-all duration-300 ease-out motion-reduce:transition-none ${
+                     lang === 'id' ? 'opacity-0 rotate-90 scale-75 absolute' : 'opacity-100 rotate-0 scale-100'
+                   }`}
+                 >
+                   ID
+                 </span>
+               </span>
+             </button>
             <Link
               href="/"
               className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300"
@@ -138,7 +181,12 @@ export default function ProjectCaseStudyPage() {
           </div>
 
           {/* Cover Image */}
-          <div className="relative aspect-[16/9] w-full rounded-3xl overflow-hidden bg-neutral-100 dark:bg-[#18181d] border border-neutral-200/70 dark:border-neutral-800 shadow-xl">
+          {/* Ujung akhir shared element transition — nama harus sama persis
+              dengan cover kartu di halaman beranda. */}
+          <div
+            style={{ viewTransitionName: coverTransitionName(project.slug) }}
+            className="relative aspect-[16/9] w-full rounded-3xl overflow-hidden bg-neutral-100 dark:bg-[#18181d] border border-neutral-200/70 dark:border-neutral-800 shadow-xl"
+          >
             <Image
               src={project.cover_image || '/img/optimized/portfolio/home.webp'}
               alt={project.title}

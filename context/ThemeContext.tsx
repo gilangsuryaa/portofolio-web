@@ -1,12 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  toggleTheme: (origin?: { x: number; y: number }) => void;
   setTheme: (theme: Theme) => void;
 }
 
@@ -14,20 +15,12 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const savedTheme = localStorage.getItem('theme') as Theme | null;
-    if (savedTheme) {
-      setThemeState(savedTheme);
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setThemeState('dark');
-      document.documentElement.classList.add('dark');
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    setThemeState(initialTheme);
   }, []);
 
   const setTheme = (newTheme: Theme) => {
@@ -37,9 +30,41 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  const toggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(nextTheme);
+  const toggleTheme = async (origin?: { x: number; y: number }) => {
+    const next = theme === 'light' ? 'dark' : 'light';
+
+    if (!document.startViewTransition || !origin) {
+      setTheme(next);
+      return;
+    }
+
+    // Penanda agar aturan ::view-transition khusus tema hanya berlaku di sini,
+    // tidak ikut mempengaruhi transisi navigasi antar halaman.
+    const root = document.documentElement;
+    root.classList.add('vt-theme');
+
+    const transition = document.startViewTransition(() => {
+      flushSync(() => setTheme(next));
+    });
+
+    transition.finished.finally(() => root.classList.remove('vt-theme'));
+
+    await transition.ready;
+
+    const { x, y } = origin;
+    const radius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    document.documentElement.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+      {
+        duration: 500,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        pseudoElement: '::view-transition-new(root)',
+      }
+    );
   };
 
   return (

@@ -9,12 +9,14 @@ interface LanguageContextType {
   toggleLang: () => void;
   setLang: (lang: Language) => void;
   t: (idText: string, enText: string) => string;
+  fading: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Language>('id');
+  const [fading, setFading] = useState(false);
 
   useEffect(() => {
     const savedLang = localStorage.getItem('language') as Language | null;
@@ -32,7 +34,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const toggleLang = () => {
     const nextLang = lang === 'id' ? 'en' : 'id';
-    setLang(nextLang);
+    setFading(true);
+    setTimeout(() => {
+      setLang(nextLang);
+      setFading(false);
+    }, 150);
   };
 
   const t = (idText: string, enText: string) => {
@@ -40,7 +46,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ lang, toggleLang, setLang, t }}>
+    <LanguageContext.Provider value={{ lang, toggleLang, setLang, t, fading }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -65,23 +65,49 @@ export default function Navbar({ profile }: NavbarProps) {
         {/* Action Controls */}
         <div className="flex items-center gap-2 ml-4">
           
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 transition-colors"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-          </button>
+           {/* Theme Toggle */}
+           <button
+             onClick={(e) => toggleTheme({ x: e.clientX, y: e.clientY })}
+             aria-label="Toggle theme"
+             className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 transition-colors"
+           >
+             <span className="relative block w-4 h-4">
+               <Moon
+                 className={`absolute inset-0 w-4 h-4 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                   theme === 'dark' ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'
+                 }`}
+               />
+               <Sun
+                 className={`absolute inset-0 w-4 h-4 text-amber-400 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                   theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'
+                 }`}
+               />
+             </span>
+           </button>
 
-          {/* Language Toggle */}
-          <button
-            onClick={toggleLang}
-            aria-label="Toggle language"
-            className="px-2.5 py-1 text-xs font-semibold rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-          >
-            {lang === 'id' ? 'EN' : 'ID'}
-          </button>
+           {/* Language Toggle */}
+           <button
+             onClick={toggleLang}
+             aria-label="Toggle language"
+             className="px-2.5 py-1 text-xs font-semibold rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors relative overflow-hidden"
+           >
+             <span className="relative block w-full h-full">
+               <span
+                 className={`inline-block transition-all duration-300 ease-out motion-reduce:transition-none ${
+                   lang === 'id' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75 absolute'
+                 }`}
+               >
+                 EN
+               </span>
+               <span
+                 className={`inline-block transition-all duration-300 ease-out motion-reduce:transition-none ${
+                   lang === 'id' ? 'opacity-0 rotate-90 scale-75 absolute' : 'opacity-100 rotate-0 scale-100'
+                 }`}
+               >
+                 ID
+               </span>
+             </span>
+           </button>
 
           {/* Contact CTA */}
           <Link

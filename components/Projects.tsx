@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { Project } from '@/lib/types';
+import { coverTransitionName } from '@/lib/view-transition';
+import TransitionLink from '@/components/TransitionLink';
 import { Briefcase, ArrowUpRight, Github, Sparkles } from 'lucide-react';
 
 interface ProjectsProps {
@@ -53,8 +54,13 @@ export default function ProjectsSection({ projects }: ProjectsProps) {
             >
               <div className="bento-glow" />
 
-              {/* Cover Image Container */}
-              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#18181d] border border-neutral-200/70 dark:border-neutral-800 mb-6">
+              {/* Cover Image Container — ujung awal shared element transition.
+                  Nama dibuat dari slug agar unik; kalau dua elemen di satu halaman
+                  memakai nama sama, seluruh transisi gagal tanpa pesan error. */}
+              <div
+                style={{ viewTransitionName: coverTransitionName(project.slug) }}
+                className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-neutral-100 dark:bg-[#18181d] border border-neutral-200/70 dark:border-neutral-800 mb-6"
+              >
                 <Image
                   src={project.cover_image || '/img/optimized/portfolio/home.webp'}
                   alt={project.title}
@@ -106,13 +112,13 @@ export default function ProjectsSection({ projects }: ProjectsProps) {
                     <span />
                   )}
 
-                  <Link
+                  <TransitionLink
                     href={`/project/${project.slug}`}
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
                   >
                     <span>{t('Studi Kasus', 'Case Study')}</span>
                     <ArrowUpRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </Link>
+                  </TransitionLink>
                 </div>
               </div>
 

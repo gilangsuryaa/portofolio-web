@@ -161,13 +161,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="p-2 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-            </button>
+             <button
+               onClick={(e) => toggleTheme({ x: e.clientX, y: e.clientY })}
+               aria-label="Toggle theme"
+               className="p-2 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+             >
+               <span className="relative block w-4 h-4">
+                 <Moon
+                   className={`absolute inset-0 w-4 h-4 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                     theme === 'dark' ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'
+                   }`}
+                 />
+                 <Sun
+                   className={`absolute inset-0 w-4 h-4 text-amber-400 transition-all duration-300 ease-out motion-reduce:transition-none ${
+                     theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'
+                   }`}
+                 />
+               </span>
+             </button>
 
             <Link
               href="/"

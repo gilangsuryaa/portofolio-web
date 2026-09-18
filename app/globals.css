@@ -15,6 +15,10 @@
   --bento-pill-border: #e4e4e7;
   --accent: #2563eb;
   --accent-glow: rgba(37, 99, 235, 0.15);
+  --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 500ms;
 }
 
 .dark {
@@ -32,15 +36,45 @@
   --accent-glow: rgba(59, 130, 246, 0.2);
 }
 
+/* Scroll halus untuk tautan anchor di navbar (#about, #work, dst).
+   Pasangannya: atribut data-scroll-behavior="smooth" di <html> pada layout.tsx,
+   yang membuat Next.js sementara mematikan smooth saat memulihkan posisi scroll
+   antar rute — sehingga perpindahan halaman tidak ikut ter-scroll beranimasi. */
 html {
   scroll-behavior: smooth;
+}
+
+/* Aturan berikut khusus untuk pergantian tema, yang digerakkan clip-path dari
+   titik tombol diklik. Cross-fade bawaan dimatikan agar tidak menumpuk.
+   WAJIB dibatasi ke .vt-theme — tanpa itu, transisi navigasi ikut kehilangan
+   cross-fade-nya dan perpindahan halaman terlihat patah. */
+html.vt-theme::view-transition-old(root),
+html.vt-theme::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html.vt-theme::view-transition-old(root) { z-index: 1; }
+html.vt-theme::view-transition-new(root) { z-index: 2; }
+
+/* Transisi navigasi antar halaman. */
+html.vt-nav::view-transition-old(root) {
+  animation: vt-fade-out var(--dur-base) var(--ease-out-quint) both;
+}
+html.vt-nav::view-transition-new(root) {
+  animation: vt-fade-in var(--dur-base) var(--ease-out-quint) both;
+}
+
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+
+/* Cover proyek yang memuai dari kartu ke halaman detail. Sedikit lebih lambat
+   dari cross-fade latarnya supaya pergerakannya yang jadi fokus mata. */
+::view-transition-group(*) {
+  animation-duration: var(--dur-slow);
+  animation-timing-function: var(--ease-out-quint);
 }
 
 body {
   background-color: var(--bento-bg);
   color: var(--bento-text);
   font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
 }
 
@@ -98,4 +132,62 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* fill-mode `backwards`, BUKAN `both`.
+   Dengan `both`, transform: translateY(0) tetap menempel setelah animasi selesai.
+   Nilai transform apa pun selain `none` menjadikan elemen containing block bagi
+   keturunannya yang position: fixed — sehingga drawer menu mobile (fixed inset-0)
+   akan menempel ke atas dokumen, bukan ke viewport, saat halaman sedang di-scroll.
+   `backwards` mengembalikan elemen ke keadaan normal setelah animasi, dan karena
+   keyframe akhir memang sama dengan keadaan normal, tampilannya tidak berubah. */
+.animate-page-enter {
+  animation: page-enter var(--dur-base) var(--ease-out-quint) backwards;
+}
+
+/* Konten yang muncul setelah pengambilan data selesai. */
+@keyframes content-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-content-enter {
+  animation: content-enter var(--dur-slow) var(--ease-out-quint) backwards;
+}
+
+/* CATATAN: jangan menekan animasi masuk lewat aturan `animation: none` yang
+   bergantung pada kelas .vt-nav.
+   Kelas itu dilepas saat transisi selesai, dan begitu dilepas CSS menganggap
+   animation-name berubah dari none menjadi bernama — sehingga animasinya justru
+   mulai berjalan saat itu juga. Efeknya konten terlihat seperti habis di-refresh
+   tepat setelah transisi berakhir.
+   Penanganannya kini di sisi React: kelas animasinya tidak dipasang sama sekali
+   bila navigasi berjalan lewat View Transition (lihat app/template.tsx). */
+
+/* Spinner sengaja ditahan 250ms. Pemuatan yang cepat jadi tidak sempat
+   memunculkan kedipan spinner sebelum kontennya siap. */
+@keyframes spinner-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-spinner-in {
+  animation: spinner-in var(--dur-base) var(--ease-out-quint) 250ms backwards;
 }

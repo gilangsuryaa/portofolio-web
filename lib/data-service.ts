@@ -187,17 +187,40 @@ export async function deleteSkillItem(id: string): Promise<{ success: boolean; e
 }
 
 // ---------------- PROJECTS ----------------
+
+// Cache proyek di memori untuk sesi berjalan.
+// Halaman beranda sudah mengambil seluruh proyek, jadi saat pengunjung membuka
+// salah satu studi kasus datanya sebenarnya sudah ada. Tanpa cache ini halaman
+// detail memunculkan spinner dan mengambil ulang data yang sama — dan yang lebih
+// penting, gambar tujuan shared element transition belum ada di DOM saat browser
+// mengambil snapshot, sehingga morph-nya gagal diam-diam.
+let projectCache: Project[] = [];
+
+function cacheProjects(list: Project[]) {
+  if (list && list.length > 0) projectCache = list;
+}
+
+/** Pembacaan sinkron, untuk render pertama sebelum data segar tiba. */
+export function getCachedProjectBySlug(slug: string): Project | null {
+  return projectCache.find(p => p.slug === slug) || null;
+}
+
 export async function getProjects(): Promise<Project[]> {
   const supabase = getSupabaseBrowserClient();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('projects').select('*').order('order_index', { ascending: true });
-      if (!error && data && data.length > 0) return data as Project[];
+      if (!error && data && data.length > 0) {
+        cacheProjects(data as Project[]);
+        return data as Project[];
+      }
     } catch (err) {
       console.warn('Supabase fetch projects error, using fallback:', err);
     }
   }
-  return getStoredData<Project[]>('projects', initialProjects);
+  const stored = getStoredData<Project[]>('projects', initialProjects);
+  cacheProjects(stored);
+  return stored;
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
@@ -205,7 +228,11 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   if (supabase) {
     try {
       const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).single();
-      if (!error && data) return data as Project;
+      if (!error && data) {
+        const fresh = data as Project;
+        projectCache = [...projectCache.filter(p => p.slug !== slug), fresh];
+        return fresh;
+      }
     } catch (err) {
       console.warn('Supabase fetch project slug error, using fallback:', err);
     }
