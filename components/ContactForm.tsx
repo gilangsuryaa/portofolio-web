@@ -66,7 +66,15 @@ export default function ContactForm({ profile }: ContactFormProps) {
 
             <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-[#191920] border border-neutral-100 dark:border-neutral-800 space-y-1">
               <span className="text-xs text-neutral-400 font-medium">{t('Email Langsung', 'Direct Email')}</span>
-              <p className="text-sm font-bold text-neutral-900 dark:text-white">{email}</p>
+              {/* Alamat email adalah satu kata panjang tanpa spasi, jadi browser
+                  tidak punya titik patah alami. Tanpa break-words, teksnya menembus
+                  kotak di layar sempit. Ukuran font dikecilkan di mobile agar tetap
+                  muat satu baris pada ponsel umum, dan break-words menjadi jaring
+                  pengaman untuk layar yang lebih sempit lagi atau saat pengguna
+                  memperbesar ukuran font sistem. */}
+              <p className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white break-words">
+                {email}
+              </p>
             </div>
           </div>
 
