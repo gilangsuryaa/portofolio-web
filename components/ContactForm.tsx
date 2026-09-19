@@ -5,10 +5,15 @@ import { useLanguage } from '@/context/LanguageContext';
 import { submitContactMessage } from '@/lib/data-service';
 import { Mail, Send, CheckCircle2, AlertCircle, Loader2, MessageSquare, ArrowUpRight } from 'lucide-react';
 import { Profile } from '@/lib/types';
+import Turnstile from '@/components/Turnstile';
 
 interface ContactFormProps {
   profile?: Profile | null;
 }
+
+// Selama site key belum dipasang, widget tidak dirender dan form tetap berfungsi
+// seperti sebelumnya. Jadi situs tidak rusak sebelum kuncinya dikonfigurasi.
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export default function ContactForm({ profile }: ContactFormProps) {
   const email = profile?.email || 'gs7832583@gmail.com';
@@ -17,23 +22,43 @@ export default function ContactForm({ profile }: ContactFormProps) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
+
+  const turnstileAktif = Boolean(TURNSTILE_SITE_KEY);
+  const menungguVerifikasi = turnstileAktif && !turnstileToken;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
     setErrorMessage('');
 
     try {
-      const res = await submitContactMessage(formData);
+      const res = await submitContactMessage(formData, turnstileToken || undefined);
       if (res.success) {
         setStatus('success');
         setFormData({ name: '', email: '', message: '' });
       } else {
         setStatus('error');
-        setErrorMessage(res.error || t('Terjadi kesalahan saat mengirim pesan.', 'An error occurred while sending your message.'));
+        setErrorMessage(
+          res.error === 'turnstile'
+            ? t(
+                'Verifikasi keamanan gagal. Silakan coba lagi.',
+                'Security verification failed. Please try again.'
+              )
+            : t('Terjadi kesalahan saat mengirim pesan.', 'An error occurred while sending your message.')
+        );
       }
     } catch (err: any) {
       setStatus('error');
       setErrorMessage(err?.message || t('Gagal mengirim pesan.', 'Failed to send the message.'));
+    } finally {
+      // Token Turnstile hanya sekali pakai. Baik berhasil maupun gagal, widget
+      // harus diulang agar percobaan berikutnya punya token yang sah.
+      if (turnstileAktif) {
+        setTurnstileToken('');
+        setTurnstileResetKey((n) => n + 1);
+      }
     }
   };
 
@@ -151,10 +176,28 @@ export default function ContactForm({ profile }: ContactFormProps) {
                   />
                 </div>
 
+                {turnstileAktif && (
+                  <div className="flex flex-col gap-2">
+                    <Turnstile
+                      siteKey={TURNSTILE_SITE_KEY as string}
+                      onToken={setTurnstileToken}
+                      resetKey={turnstileResetKey}
+                    />
+                    {menungguVerifikasi && (
+                      <p className="text-[11px] text-neutral-400">
+                        {t(
+                          'Selesaikan verifikasi di atas untuk mengaktifkan tombol kirim.',
+                          'Complete the verification above to enable the send button.'
+                        )}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  disabled={status === 'loading'}
-                  className="w-full py-3.5 px-6 rounded-2xl text-xs sm:text-sm font-semibold bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-900 shadow-sm transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                  disabled={status === 'loading' || menungguVerifikasi}
+                  className="w-full py-3.5 px-6 rounded-2xl text-xs sm:text-sm font-semibold bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-900 shadow-sm transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {status === 'loading' ? (
                     <>

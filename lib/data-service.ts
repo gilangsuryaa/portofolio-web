@@ -324,28 +324,34 @@ export async function getContactMessages(): Promise<ContactMessage[]> {
   return getStoredData<ContactMessage[]>('messages', []);
 }
 
-export async function submitContactMessage(message: { name: string; email: string; message: string }): Promise<{ success: boolean; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
-
-  // Supabase aktif: pesan baru dianggap terkirim kalau benar-benar masuk database.
-  // Jangan jatuh ke localStorage — pesannya akan tersimpan di browser pengunjung
-  // dan tidak akan pernah sampai ke halaman admin.
-  if (supabase) {
+export async function submitContactMessage(
+  message: { name: string; email: string; message: string },
+  turnstileToken?: string
+): Promise<{ success: boolean; error?: string }> {
+  // Pengiriman tidak lagi menulis langsung ke Supabase dari browser.
+  // Semuanya lewat /api/contact supaya token Turnstile diverifikasi di server —
+  // pemeriksaan di sisi klien bisa dilewati begitu saja oleh pengirim spam.
+  if (isSupabaseConfigured) {
     try {
-      const { error } = await supabase.from('contact_messages').insert([
-        {
-          name: message.name,
-          email: message.email,
-          message: message.message,
-          is_read: false,
-        }
-      ]);
-      if (error) throw error;
-      return { success: true };
-    } catch (err: any) {
-      console.error('Supabase submit message error:', err);
-      // Pesan error aslinya sengaja tidak diteruskan ke pengunjung agar detail
-      // internal tidak bocor; ContactForm menampilkan teks ramah dwibahasa.
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...message, turnstileToken }),
+      });
+
+      const data = await res.json().catch(() => ({} as { success?: boolean; error?: string }));
+
+      if (res.ok && data.success) return { success: true };
+
+      // Kode galat internal tidak diteruskan apa adanya; ContactForm yang
+      // menampilkan teks ramah dwibahasa. Hanya kegagalan verifikasi yang
+      // dibedakan, karena pengunjung perlu tahu untuk mengulang tantangannya.
+      if (res.status === 403) return { success: false, error: 'turnstile' };
+
+      console.error('Pengiriman pesan gagal:', data?.error || res.status);
+      return { success: false };
+    } catch (err) {
+      console.error('Tidak bisa menghubungi /api/contact:', err);
       return { success: false };
     }
   }

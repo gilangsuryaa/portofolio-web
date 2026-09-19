@@ -1,0 +1,44 @@
+-- ==============================================================================
+-- MIGRASI: Tutup penulisan publik ke tabel contact_messages
+-- Jalankan di Supabase Dashboard → SQL Editor
+-- ==============================================================================
+--
+-- ⚠️ JANGAN jalankan sebelum tiga hal ini beres:
+--    1. Kode dengan /api/contact sudah ter-deploy ke produksi.
+--    2. SUPABASE_SERVICE_ROLE_KEY sudah diisi di Environment Variables Vercel.
+--    3. Form kontak sudah diuji dan berhasil mengirim di situs produksi.
+--
+-- Alasannya: setelah policy di bawah dihapus, anon key tidak lagi boleh menulis.
+-- Kalau route handler belum aktif atau service role belum terpasang, form kontak
+-- akan berhenti berfungsi sepenuhnya.
+--
+-- ------------------------------------------------------------------------------
+-- Kenapa ini perlu
+-- ------------------------------------------------------------------------------
+-- Policy "Public Insert Messages" mengizinkan SIAPA PUN menulis ke tabel ini
+-- memakai anon key — dan anon key ikut terkirim ke browser setiap pengunjung,
+-- jadi sifatnya publik.
+--
+-- Selama policy itu ada, Cloudflare Turnstile tidak memberi perlindungan nyata:
+-- pengirim spam cukup melewati halaman web dan menembak endpoint REST Supabase
+-- secara langsung. Verifikasi di sisi klien tidak bisa menghentikan itu.
+--
+-- Setelah policy dihapus, satu-satunya jalan masuk adalah /api/contact, yang
+-- memverifikasi token Turnstile di server sebelum menulis memakai service role
+-- (service role melewati RLS, sehingga tidak butuh policy insert).
+-- ------------------------------------------------------------------------------
+
+DROP POLICY IF EXISTS "Public Insert Messages" ON public.contact_messages;
+
+-- Policy admin tetap dipertahankan agar dashboard bisa membaca, menandai, dan
+-- menghapus pesan seperti biasa.
+--   "Admin Full Access Messages" ON public.contact_messages FOR ALL
+--   USING (auth.role() = 'authenticated')
+
+-- ------------------------------------------------------------------------------
+-- Cara membatalkan bila terjadi masalah
+-- ------------------------------------------------------------------------------
+-- Jalankan ini untuk mengembalikan keadaan semula:
+--
+-- CREATE POLICY "Public Insert Messages" ON public.contact_messages
+--   FOR INSERT WITH CHECK (true);
