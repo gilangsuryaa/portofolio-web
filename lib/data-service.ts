@@ -1,6 +1,6 @@
 import { getSupabaseBrowserClient, isSupabaseConfigured } from './supabase/client';
 import { initialProfile, initialEducation, initialSkills, initialProjects } from './supabase/fallback-data';
-import { Profile, Education, Skill, Project, ContactMessage } from './types';
+import { Profile, Education, Skill, Project, Certificate, ContactMessage } from './types';
 
 // Helper to access localStorage in client
 function getStoredData<T>(key: string, fallback: T): T {
@@ -307,6 +307,71 @@ export async function deleteProject(id: string): Promise<{ success: boolean; err
 
   const current = getStoredData<Project[]>('projects', initialProjects);
   setStoredData('projects', current.filter(p => p.id !== id));
+  return { success: true };
+}
+
+// ---------------- CERTIFICATES ----------------
+export async function getCertificates(): Promise<Certificate[]> {
+  const supabase = getSupabaseBrowserClient();
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.from('certificates').select('*').order('display_order', { ascending: true });
+      if (!error && data && data.length > 0) return data as Certificate[];
+    } catch (err) {
+      console.warn('Supabase fetch certificates error, using fallback:', err);
+    }
+  }
+  return getStoredData<Certificate[]>('certificates', []);
+}
+
+export async function saveCertificate(cert: Partial<Certificate>): Promise<{ success: boolean; data?: Certificate; error?: string }> {
+  const supabase = getSupabaseBrowserClient();
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.from('certificates').upsert(cert).select().single();
+      if (error) throw error;
+      return { success: true, data: data as Certificate };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  const current = getStoredData<Certificate[]>('certificates', []);
+  let savedItem: Certificate;
+  let updatedList: Certificate[];
+
+  if (cert.id) {
+    savedItem = { ...current.find(c => c.id === cert.id)!, ...cert } as Certificate;
+    updatedList = current.map(c => c.id === cert.id ? savedItem : c);
+  } else {
+    savedItem = {
+      id: `cert-${Date.now()}`,
+      title: cert.title || '',
+      issuer: cert.issuer || '',
+      issued_date: cert.issued_date || '',
+      image_url: cert.image_url || '',
+      display_order: cert.display_order ?? current.length + 1,
+    };
+    updatedList = [...current, savedItem];
+  }
+  setStoredData('certificates', updatedList);
+  return { success: true, data: savedItem };
+}
+
+export async function deleteCertificate(id: string): Promise<{ success: boolean; error?: string }> {
+  const supabase = getSupabaseBrowserClient();
+  if (supabase) {
+    try {
+      const { error } = await supabase.from('certificates').delete().eq('id', id);
+      if (error) throw error;
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  }
+
+  const current = getStoredData<Certificate[]>('certificates', []);
+  setStoredData('certificates', current.filter(c => c.id !== id));
   return { success: true };
 }
 

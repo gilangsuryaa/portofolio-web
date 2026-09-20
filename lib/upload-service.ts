@@ -49,11 +49,11 @@ export async function compressImage(file: File, maxWidth = 1600, maxHeight = 160
  */
 export async function uploadFile(
   file: File,
-  folder = 'uploads'
+  folder = 'uploads',
+  bucket = 'portfolio'
 ): Promise<{ url: string; error?: string }> {
   const supabase = getSupabaseBrowserClient();
 
-  // If it's an image, we can compress it
   const isImage = file.type.startsWith('image/');
 
   if (supabase && isSupabaseConfigured) {
@@ -61,9 +61,8 @@ export async function uploadFile(
       const fileExt = file.name.split('.').pop() || (isImage ? 'webp' : 'pdf');
       const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
 
-      // Upload directly to Supabase storage bucket 'portfolio'
       const { data, error } = await supabase.storage
-        .from('portfolio')
+        .from(bucket)
         .upload(fileName, file, {
           cacheControl: '3600',
           upsert: true,
@@ -71,7 +70,7 @@ export async function uploadFile(
 
       if (!error && data) {
         const { data: publicUrlData } = supabase.storage
-          .from('portfolio')
+          .from(bucket)
           .getPublicUrl(fileName);
 
         if (publicUrlData?.publicUrl) {

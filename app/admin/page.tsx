@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getProjects, getContactMessages, getSkills, getEducation, getProfile } from '@/lib/data-service';
+import { getProjects, getContactMessages, getSkills, getEducation, getProfile, getCertificates } from '@/lib/data-service';
 import { useAuth } from '@/context/AuthContext';
 import {
   Briefcase,
   Mail,
   Code2,
   GraduationCap,
+  Award,
   Plus,
   ArrowRight,
   Database,
@@ -16,7 +17,7 @@ import {
   AlertTriangle,
   FileCode2
 } from 'lucide-react';
-import { Project, ContactMessage } from '@/lib/types';
+import { Project, Certificate, ContactMessage } from '@/lib/types';
 
 export default function AdminDashboardPage() {
   const { isSupabase } = useAuth();
@@ -24,21 +25,24 @@ export default function AdminDashboardPage() {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [skillCount, setSkillCount] = useState(0);
   const [educationCount, setEducationCount] = useState(0);
+  const [certCount, setCertCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStats() {
       try {
-        const [projs, msgs, sks, edus] = await Promise.all([
+        const [projs, msgs, sks, edus, certs] = await Promise.all([
           getProjects(),
           getContactMessages(),
           getSkills(),
           getEducation(),
+          getCertificates(),
         ]);
         setProjectCount(projs.length);
         setMessages(msgs);
         setSkillCount(sks.length);
         setEducationCount(edus.length);
+        setCertCount(certs.length);
       } catch (err) {
         console.error('Error loading dashboard stats:', err);
       } finally {
@@ -165,7 +169,7 @@ export default function AdminDashboardPage() {
           </Link>
         </div>
 
-      </div>
+        </div>
 
       {/* Quick Actions & Recent Messages Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

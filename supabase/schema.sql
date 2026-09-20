@@ -112,7 +112,20 @@ CREATE TABLE IF NOT EXISTS public.projects (
 );
 
 -- ------------------------------------------------------------------------------
--- 5. TABLE: CONTACT MESSAGES
+-- 5. TABLE: CERTIFICATES
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.certificates (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    issuer TEXT NOT NULL,
+    issued_date TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    display_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- ------------------------------------------------------------------------------
+-- 6. TABLE: CONTACT MESSAGES
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.contact_messages (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -130,13 +143,29 @@ ALTER TABLE public.profile ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.education ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.skills ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.certificates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Public Read Profile" ON public.profile;
+DROP POLICY IF EXISTS "Public Read Education" ON public.education;
+DROP POLICY IF EXISTS "Public Read Skills" ON public.skills;
+DROP POLICY IF EXISTS "Public Read Projects" ON public.projects;
+DROP POLICY IF EXISTS "Public Read Certificates" ON public.certificates;
+DROP POLICY IF EXISTS "Public Insert Messages" ON public.contact_messages;
+DROP POLICY IF EXISTS "Admin Full Access Profile" ON public.profile;
+DROP POLICY IF EXISTS "Admin Full Access Education" ON public.education;
+DROP POLICY IF EXISTS "Admin Full Access Skills" ON public.skills;
+DROP POLICY IF EXISTS "Admin Full Access Projects" ON public.projects;
+DROP POLICY IF EXISTS "Admin Full Access Certificates" ON public.certificates;
+DROP POLICY IF EXISTS "Admin Full Access Messages" ON public.contact_messages;
 
 -- Public READ policies for portfolio content
 CREATE POLICY "Public Read Profile" ON public.profile FOR SELECT USING (true);
 CREATE POLICY "Public Read Education" ON public.education FOR SELECT USING (true);
 CREATE POLICY "Public Read Skills" ON public.skills FOR SELECT USING (true);
 CREATE POLICY "Public Read Projects" ON public.projects FOR SELECT USING (true);
+CREATE POLICY "Public Read Certificates" ON public.certificates FOR SELECT USING (true);
 
 -- Public INSERT for contact form
 CREATE POLICY "Public Insert Messages" ON public.contact_messages FOR INSERT WITH CHECK (true);
@@ -146,6 +175,7 @@ CREATE POLICY "Admin Full Access Profile" ON public.profile FOR ALL USING (auth.
 CREATE POLICY "Admin Full Access Education" ON public.education FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Admin Full Access Skills" ON public.skills FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Admin Full Access Projects" ON public.projects FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Admin Full Access Certificates" ON public.certificates FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Admin Full Access Messages" ON public.contact_messages FOR ALL USING (auth.role() = 'authenticated');
 
 -- ------------------------------------------------------------------------------
@@ -155,21 +185,53 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('portfolio', 'portfolio', true)
 ON CONFLICT (id) DO UPDATE SET public = true;
 
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('certificates', 'certificates', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- Drop existing storage policies if they exist
+DROP POLICY IF EXISTS "Public Read Portfolio Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated Upload Portfolio Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated Update Portfolio Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated Delete Portfolio Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Public Read Certificates Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated Upload Certificates Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated Update Certificates Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated Delete Certificates Storage" ON storage.objects;
+
+-- Portfolio bucket policies
 CREATE POLICY "Public Read Portfolio Storage" 
 ON storage.objects FOR SELECT 
 USING (bucket_id = 'portfolio');
 
 CREATE POLICY "Authenticated Upload Portfolio Storage" 
 ON storage.objects FOR INSERT 
-WITH CHECK (bucket_id = 'portfolio');
+WITH CHECK (bucket_id = 'portfolio' AND auth.role() = 'authenticated');
 
 CREATE POLICY "Authenticated Update Portfolio Storage" 
 ON storage.objects FOR UPDATE 
-USING (bucket_id = 'portfolio');
+USING (bucket_id = 'portfolio' AND auth.role() = 'authenticated');
 
 CREATE POLICY "Authenticated Delete Portfolio Storage" 
 ON storage.objects FOR DELETE 
-USING (bucket_id = 'portfolio');
+USING (bucket_id = 'portfolio' AND auth.role() = 'authenticated');
+
+-- Certificates bucket policies
+CREATE POLICY "Public Read Certificates Storage" 
+ON storage.objects FOR SELECT 
+USING (bucket_id = 'certificates');
+
+CREATE POLICY "Authenticated Upload Certificates Storage" 
+ON storage.objects FOR INSERT 
+WITH CHECK (bucket_id = 'certificates' AND auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated Update Certificates Storage" 
+ON storage.objects FOR UPDATE 
+USING (bucket_id = 'certificates' AND auth.role() = 'authenticated');
+
+CREATE POLICY "Authenticated Delete Certificates Storage" 
+ON storage.objects FOR DELETE 
+USING (bucket_id = 'certificates' AND auth.role() = 'authenticated');
 
 -- ------------------------------------------------------------------------------
 -- SEED INITIAL DATA

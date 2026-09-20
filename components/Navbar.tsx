@@ -51,6 +51,9 @@ export default function Navbar({ profile }: NavbarProps) {
           <Link href="/#work" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
             {t('Proyek', 'Projects')}
           </Link>
+          <Link href="/#certificates" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
+            {t('Sertifikat', 'Certificates')}
+          </Link>
           <Link href="/#skills" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
             {t('Keahlian', 'Skills')}
           </Link>
@@ -166,6 +169,9 @@ export default function Navbar({ profile }: NavbarProps) {
             </Link>
             <Link href="/#work" onClick={closeMobile} className="text-sm font-medium text-neutral-800 dark:text-neutral-200 py-1">
               {t('Portofolio & Proyek', 'Projects')}
+            </Link>
+            <Link href="/#certificates" onClick={closeMobile} className="text-sm font-medium text-neutral-800 dark:text-neutral-200 py-1">
+              {t('Sertifikat', 'Certificates')}
             </Link>
             <Link href="/#skills" onClick={closeMobile} className="text-sm font-medium text-neutral-800 dark:text-neutral-200 py-1">
               {t('Keahlian & Stack', 'Skills & Stack')}

@@ -11,6 +11,7 @@ import {
   GraduationCap,
   Code2,
   Briefcase,
+  Award,
   Mail,
   LogOut,
   ExternalLink,
@@ -52,8 +53,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { label: 'Profil & Hero', href: '/admin/profile', icon: User },
     { label: 'Pendidikan', href: '/admin/education', icon: GraduationCap },
-    { label: 'Keahlian (Skills)', href: '/admin/skills', icon: Code2 },
     { label: 'Portofolio', href: '/admin/projects', icon: Briefcase },
+    { label: 'Sertifikat', href: '/admin/certificates', icon: Award },
+    { label: 'Keahlian (Skills)', href: '/admin/skills', icon: Code2 },
     { label: 'Pesan Masuk', href: '/admin/messages', icon: Mail },
   ];
 

@@ -14,6 +14,7 @@ interface ImageUploadInputProps {
   aspectRatio?: 'square' | 'video' | 'auto';
   helperText?: string;
   isPdf?: boolean;
+  bucket?: string;
 }
 
 export default function ImageUploadInput({
@@ -25,6 +26,7 @@ export default function ImageUploadInput({
   aspectRatio = 'auto',
   helperText,
   isPdf = false,
+  bucket = 'portfolio',
 }: ImageUploadInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -39,7 +41,7 @@ export default function ImageUploadInput({
     setError('');
 
     try {
-      const res = await uploadFile(file, folder);
+      const res = await uploadFile(file, folder, bucket);
       if (res.url) {
         onChange(res.url);
       } else {

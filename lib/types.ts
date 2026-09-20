@@ -76,6 +76,16 @@ export interface Project {
   created_at?: string;
 }
 
+export interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  issued_date: string;
+  image_url: string;
+  display_order: number;
+  created_at?: string;
+}
+
 export interface ContactMessage {
   id: string;
   name: string;
