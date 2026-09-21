@@ -14,7 +14,7 @@ export default function Footer({ profile }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   const name = profile?.name || 'Gilang Surya Ramadhan';
-  const email = profile?.email || 'gs7832583@gmail.com';
+  const email = profile?.email || 'gilangsuryaramadhan10@gmail.com';
   const linkedin = profile?.linkedin_url || 'https://www.linkedin.com/in/gilang-surya-ramadhan-781084391';
   const github = profile?.github_url || 'https://github.com/gilangsuryaa';
   const instagram = profile?.instagram_url || 'https://www.instagram.com/gilang.sra';

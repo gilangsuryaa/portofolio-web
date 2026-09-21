@@ -12,7 +12,7 @@ export const initialProfile: Profile = {
   avatar_url: '/img/optimized/gw.webp',
   logo_url: '/img/optimized/gw-bunder.webp',
   cv_url: '/assests/CV.pdf',
-  email: 'gs7832583@gmail.com',
+  email: 'gilangsuryaramadhan10@gmail.com',
   github_url: 'https://github.com/gilangsuryaa',
   linkedin_url: 'https://www.linkedin.com/in/gilang-surya-ramadhan-781084391',
   instagram_url: 'https://www.instagram.com/gilang.sra',

@@ -16,7 +16,7 @@ interface ContactFormProps {
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export default function ContactForm({ profile }: ContactFormProps) {
-  const email = profile?.email || 'gs7832583@gmail.com';
+  const email = profile?.email || 'gilangsuryaramadhan10@gmail.com';
   const { t } = useLanguage();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');

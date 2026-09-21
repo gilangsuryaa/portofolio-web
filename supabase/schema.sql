@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS public.profile (
     avatar_url TEXT DEFAULT '/img/optimized/gw.webp',
     logo_url TEXT DEFAULT '/img/optimized/gw-bunder.webp',
     cv_url TEXT DEFAULT '/assests/CV.pdf',
-    email TEXT DEFAULT 'gs7832583@gmail.com',
+    email TEXT DEFAULT 'gilangsuryaramadhan10@gmail.com',
     github_url TEXT DEFAULT 'https://github.com/gilangsuryaa',
     linkedin_url TEXT DEFAULT 'https://www.linkedin.com/in/gilang-surya-ramadhan-781084391',
     instagram_url TEXT DEFAULT 'https://www.instagram.com/gilang.sra',
