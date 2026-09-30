@@ -398,19 +398,22 @@ export async function getContactMessages(): Promise<ContactMessage[]> {
 }
 
 export async function submitContactMessage(
-  message: { name: string; email: string; message: string }
+  message: { name: string; email: string; message: string },
+  turnstileToken?: string
 ): Promise<{ success: boolean; error?: string }> {
   if (isSupabaseConfigured) {
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(message),
+        body: JSON.stringify({ ...message, turnstileToken }),
       });
 
       const data = await res.json().catch(() => ({} as { success?: boolean; error?: string }));
 
       if (res.ok && data.success) return { success: true };
+
+      if (res.status === 403) return { success: false, error: 'turnstile' };
 
       console.error('Pengiriman pesan gagal:', data?.error || res.status);
       return { success: false };
