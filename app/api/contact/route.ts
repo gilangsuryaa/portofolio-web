@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseServerClient } from '@/lib/supabase/server';
+import { checkRateLimit } from '@/lib/rate-limiter';
 
 /**
  * Endpoint pengiriman pesan kontak.
@@ -52,6 +53,12 @@ function clientIp(req: NextRequest): string | null {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = clientIp(req);
+  
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json({ success: false, error: 'terlalu-banyak-permintaan' }, { status: 429 });
+  }
+
   let body: any;
   try {
     body = await req.json();
