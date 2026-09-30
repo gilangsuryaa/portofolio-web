@@ -1,19 +1,13 @@
-import { isSupabaseConfigured } from './supabase/client';
+import { isSupabaseConfigured, getSupabaseBrowserClient as getBrowserClientDirect } from './supabase/client';
 import { getSupabaseServerClient } from './supabase/server-client';
 import { initialProfile, initialEducation, initialSkills, initialProjects } from './supabase/fallback-data';
 import { Profile, Education, Skill, Project, Certificate, ContactMessage } from './types';
-
-function getSupabaseBrowserClient() {
-  if (typeof window === 'undefined') return null;
-  const { getSupabaseBrowserClient: getBrowser } = require('./supabase/client');
-  return getBrowser();
-}
 
 function getSupabaseClient() {
   if (typeof window === 'undefined') {
     return getSupabaseServerClient();
   }
-  return getSupabaseBrowserClient();
+  return getBrowserClientDirect();
 }
 
 // Helper to access localStorage in client
@@ -51,7 +45,7 @@ export async function getProfile(): Promise<Profile> {
 }
 
 export async function updateProfile(profile: Partial<Profile>): Promise<{ success: boolean; data?: Profile; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('profile').upsert({ id: '1', ...profile, updated_at: new Date().toISOString() }).select().single();
@@ -85,7 +79,7 @@ export async function getEducation(): Promise<Education[]> {
 }
 
 export async function saveEducationItem(item: Partial<Education>): Promise<{ success: boolean; data?: Education; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('education').upsert(item).select().single();
@@ -119,7 +113,7 @@ export async function saveEducationItem(item: Partial<Education>): Promise<{ suc
 }
 
 export async function deleteEducationItem(id: string): Promise<{ success: boolean; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { error } = await supabase.from('education').delete().eq('id', id);
@@ -151,7 +145,7 @@ export async function getSkills(): Promise<Skill[]> {
 }
 
 export async function saveSkillItem(item: Partial<Skill>): Promise<{ success: boolean; data?: Skill; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('skills').upsert(item).select().single();
@@ -184,7 +178,7 @@ export async function saveSkillItem(item: Partial<Skill>): Promise<{ success: bo
 }
 
 export async function deleteSkillItem(id: string): Promise<{ success: boolean; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { error } = await supabase.from('skills').delete().eq('id', id);
@@ -256,7 +250,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 }
 
 export async function saveProject(project: Partial<Project>): Promise<{ success: boolean; data?: Project; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('projects').upsert(project).select().single();
@@ -308,7 +302,7 @@ export async function saveProject(project: Partial<Project>): Promise<{ success:
 }
 
 export async function deleteProject(id: string): Promise<{ success: boolean; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { error } = await supabase.from('projects').delete().eq('id', id);
@@ -339,7 +333,7 @@ export async function getCertificates(): Promise<Certificate[]> {
 }
 
 export async function saveCertificate(cert: Partial<Certificate>): Promise<{ success: boolean; data?: Certificate; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('certificates').upsert(cert).select().single();
@@ -373,7 +367,7 @@ export async function saveCertificate(cert: Partial<Certificate>): Promise<{ suc
 }
 
 export async function deleteCertificate(id: string): Promise<{ success: boolean; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { error } = await supabase.from('certificates').delete().eq('id', id);
@@ -450,7 +444,7 @@ export async function submitContactMessage(
 }
 
 export async function markMessageRead(id: string, is_read: boolean): Promise<{ success: boolean; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { error } = await supabase.from('contact_messages').update({ is_read }).eq('id', id);
@@ -467,7 +461,7 @@ export async function markMessageRead(id: string, is_read: boolean): Promise<{ s
 }
 
 export async function deleteMessage(id: string): Promise<{ success: boolean; error?: string }> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = typeof window === 'undefined' ? null : getBrowserClientDirect();
   if (supabase) {
     try {
       const { error } = await supabase.from('contact_messages').delete().eq('id', id);
