@@ -398,28 +398,19 @@ export async function getContactMessages(): Promise<ContactMessage[]> {
 }
 
 export async function submitContactMessage(
-  message: { name: string; email: string; message: string },
-  turnstileToken?: string
+  message: { name: string; email: string; message: string }
 ): Promise<{ success: boolean; error?: string }> {
-  // Pengiriman tidak lagi menulis langsung ke Supabase dari browser.
-  // Semuanya lewat /api/contact supaya token Turnstile diverifikasi di server —
-  // pemeriksaan di sisi klien bisa dilewati begitu saja oleh pengirim spam.
   if (isSupabaseConfigured) {
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...message, turnstileToken }),
+        body: JSON.stringify(message),
       });
 
       const data = await res.json().catch(() => ({} as { success?: boolean; error?: string }));
 
       if (res.ok && data.success) return { success: true };
-
-      // Kode galat internal tidak diteruskan apa adanya; ContactForm yang
-      // menampilkan teks ramah dwibahasa. Hanya kegagalan verifikasi yang
-      // dibedakan, karena pengunjung perlu tahu untuk mengulang tantangannya.
-      if (res.status === 403) return { success: false, error: 'turnstile' };
 
       console.error('Pengiriman pesan gagal:', data?.error || res.status);
       return { success: false };
@@ -429,7 +420,6 @@ export async function submitContactMessage(
     }
   }
 
-  // Supabase belum dikonfigurasi — mode lokal untuk development.
   const current = getStoredData<ContactMessage[]>('messages', []);
   const newMessage: ContactMessage = {
     id: `msg-${Date.now()}`,
