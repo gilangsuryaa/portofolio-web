@@ -1,6 +1,20 @@
-import { getSupabaseBrowserClient, isSupabaseConfigured } from './supabase/client';
+import { isSupabaseConfigured } from './supabase/client';
+import { getSupabaseServerClient } from './supabase/server-client';
 import { initialProfile, initialEducation, initialSkills, initialProjects } from './supabase/fallback-data';
 import { Profile, Education, Skill, Project, Certificate, ContactMessage } from './types';
+
+function getSupabaseBrowserClient() {
+  if (typeof window === 'undefined') return null;
+  const { getSupabaseBrowserClient: getBrowser } = require('./supabase/client');
+  return getBrowser();
+}
+
+function getSupabaseClient() {
+  if (typeof window === 'undefined') {
+    return getSupabaseServerClient();
+  }
+  return getSupabaseBrowserClient();
+}
 
 // Helper to access localStorage in client
 function getStoredData<T>(key: string, fallback: T): T {
@@ -24,7 +38,7 @@ function setStoredData<T>(key: string, value: T): void {
 
 // ---------------- PROFILE ----------------
 export async function getProfile(): Promise<Profile> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('profile').select('*').single();
@@ -58,7 +72,7 @@ export async function updateProfile(profile: Partial<Profile>): Promise<{ succes
 
 // ---------------- EDUCATION ----------------
 export async function getEducation(): Promise<Education[]> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('education').select('*').order('order_index', { ascending: true });
@@ -124,7 +138,7 @@ export async function deleteEducationItem(id: string): Promise<{ success: boolea
 
 // ---------------- SKILLS ----------------
 export async function getSkills(): Promise<Skill[]> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('skills').select('*').order('order_index', { ascending: true });
@@ -206,7 +220,7 @@ export function getCachedProjectBySlug(slug: string): Project | null {
 }
 
 export async function getProjects(): Promise<Project[]> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('projects').select('*').order('order_index', { ascending: true });
@@ -224,7 +238,7 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('projects').select('*').eq('slug', slug).single();
@@ -312,7 +326,7 @@ export async function deleteProject(id: string): Promise<{ success: boolean; err
 
 // ---------------- CERTIFICATES ----------------
 export async function getCertificates(): Promise<Certificate[]> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('certificates').select('*').order('display_order', { ascending: true });
@@ -377,7 +391,7 @@ export async function deleteCertificate(id: string): Promise<{ success: boolean;
 
 // ---------------- CONTACT MESSAGES ----------------
 export async function getContactMessages(): Promise<ContactMessage[]> {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
