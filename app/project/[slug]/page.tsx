@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import { getProjectBySlug, getProjects, getProfile, getCachedProjectBySlug } from '@/lib/data-service';
+import { subscribeToRealtime } from '@/lib/supabase/client';
 import { Project, Profile } from '@/lib/types';
 import { initialProjects, initialProfile } from '@/lib/supabase/fallback-data';
 import { coverTransitionName, isViewTransitionNavigation } from '@/lib/view-transition';
@@ -57,6 +58,40 @@ export default function ProjectCaseStudyPage() {
       }
     }
     load();
+  }, [slug]);
+
+  useEffect(() => {
+    if (!slug) return;
+
+    const handleProjectsChange = async () => {
+      try {
+        const [updatedProj, updatedList] = await Promise.all([
+          getProjectBySlug(slug),
+          getProjects()
+        ]);
+        if (updatedProj) setProject(updatedProj);
+        if (updatedList) setAllProjects(updatedList);
+      } catch (err) {
+        console.error('Failed to refresh projects on realtime change:', err);
+      }
+    };
+
+    const handleProfileChange = async () => {
+      try {
+        const updatedProf = await getProfile();
+        if (updatedProf) setProfile(updatedProf);
+      } catch (err) {
+        console.error('Failed to refresh profile on realtime change:', err);
+      }
+    };
+
+    const unsubProjects = subscribeToRealtime('projects', '*', handleProjectsChange);
+    const unsubProfile = subscribeToRealtime('profile', '*', handleProfileChange);
+
+    return () => {
+      unsubProjects();
+      unsubProfile();
+    };
   }, [slug]);
 
   if (loading) {

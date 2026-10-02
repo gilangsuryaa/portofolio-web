@@ -16,8 +16,62 @@ export function getSupabaseBrowserClient(): SupabaseClient | null {
   if (!isSupabaseConfigured) return null;
   
   if (!supabaseInstance && supabaseUrl && supabaseAnonKey) {
-    supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
+    supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
+      realtime: {
+        params: {
+          eventsPerSecond: 10
+        }
+      }
+    });
   }
   
   return supabaseInstance;
+}
+
+export type RealtimeSubscription = {
+  table: string;
+  event: 'INSERT' | 'UPDATE' | 'DELETE' | '*';
+  onData: (payload: any) => void;
+  onError?: (error: Error) => void;
+};
+
+export function subscribeToRealtime(
+  table: string,
+  event: 'INSERT' | 'UPDATE' | 'DELETE' | '*',
+  onData: (payload: any) => void,
+  onError?: (error: Error) => void
+): () => void {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) {
+    console.warn('Supabase not configured for realtime');
+    return () => {};
+  }
+
+  const channel = supabase.channel(`realtime:${table}:${event}`);
+  
+  channel
+    .on(
+      'postgres_changes',
+      {
+        event,
+        schema: 'public',
+        table,
+      },
+      (payload) => {
+        onData(payload);
+      }
+    )
+    .subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        console.log(`Realtime subscription active for ${table} ${event}`);
+      }
+      if (status === 'CHANNEL_ERROR') {
+        console.error('Realtime channel error');
+        onError?.(new Error('Channel error'));
+      }
+    });
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
 }
