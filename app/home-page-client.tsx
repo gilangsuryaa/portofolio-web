@@ -38,7 +38,7 @@ export default function HomePageClient({
   useEffect(() => {
     if (!window) return;
 
-    const handleRealtimeChange = async (table: string) => {
+    const handleTableChange = async (table: string) => {
       try {
         clearStoredData(table);
         
@@ -54,23 +54,22 @@ export default function HomePageClient({
         setSkills(newSkills);
         setProjects(newProjects);
         setCertificates(newCertificates);
+        console.log(`✓ Home updated after ${table} change`);
       } catch (err) {
         console.error('Failed to refresh data on realtime change:', err);
       }
     };
 
-    const unsubProfile = subscribeToRealtime('profile', '*', () => handleRealtimeChange('profile'));
-    const unsubEducation = subscribeToRealtime('education', '*', () => handleRealtimeChange('education'));
-    const unsubSkills = subscribeToRealtime('skills', '*', () => handleRealtimeChange('skills'));
-    const unsubProjects = subscribeToRealtime('projects', '*', () => handleRealtimeChange('projects'));
-    const unsubCertificates = subscribeToRealtime('certificates', '*', () => handleRealtimeChange('certificates'));
+    const unsubscribers = [
+      subscribeToRealtime('profile', '*', () => handleTableChange('profile')),
+      subscribeToRealtime('education', '*', () => handleTableChange('education')),
+      subscribeToRealtime('skills', '*', () => handleTableChange('skills')),
+      subscribeToRealtime('projects', '*', () => handleTableChange('projects')),
+      subscribeToRealtime('certificates', '*', () => handleTableChange('certificates')),
+    ];
 
     return () => {
-      unsubProfile();
-      unsubEducation();
-      unsubSkills();
-      unsubProjects();
-      unsubCertificates();
+      unsubscribers.forEach(unsub => unsub());
     };
   }, []);
 

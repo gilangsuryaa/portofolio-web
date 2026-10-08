@@ -72,6 +72,7 @@ export default function ProjectCaseStudyPage() {
         ]);
         if (updatedProj) setProject(updatedProj);
         if (updatedList) setAllProjects(updatedList);
+        console.log('✓ Project detail updated');
       } catch (err) {
         console.error('Failed to refresh projects on realtime change:', err);
       }
@@ -82,17 +83,19 @@ export default function ProjectCaseStudyPage() {
         clearStoredData('profile');
         const updatedProf = await getProfile();
         if (updatedProf) setProfile(updatedProf);
+        console.log('✓ Profile updated');
       } catch (err) {
         console.error('Failed to refresh profile on realtime change:', err);
       }
     };
 
-    const unsubProjects = subscribeToRealtime('projects', '*', handleProjectsChange);
-    const unsubProfile = subscribeToRealtime('profile', '*', handleProfileChange);
+    const unsubscribers = [
+      subscribeToRealtime('projects', '*', handleProjectsChange),
+      subscribeToRealtime('profile', '*', handleProfileChange),
+    ];
 
     return () => {
-      unsubProjects();
-      unsubProfile();
+      unsubscribers.forEach(unsub => unsub());
     };
   }, [slug]);
 

@@ -47,7 +47,11 @@ export function subscribeToRealtime(
     return () => {};
   }
 
-  const channel = supabase.channel(`realtime:${table}:${event}`);
+  const channel = supabase.channel(`realtime:${table}:${event}`, {
+    config: {
+      broadcast: { self: false }
+    }
+  });
   
   channel
     .on(
@@ -58,20 +62,25 @@ export function subscribeToRealtime(
         table,
       },
       (payload) => {
+        console.log(`Realtime event: ${table} ${event}`, payload);
         onData(payload);
       }
     )
     .subscribe((status) => {
       if (status === 'SUBSCRIBED') {
-        console.log(`Realtime subscription active for ${table} ${event}`);
+        console.log(`✓ Realtime active: ${table}`);
       }
       if (status === 'CHANNEL_ERROR') {
-        console.error('Realtime channel error');
-        onError?.(new Error('Channel error'));
+        console.error(`✗ Realtime error: ${table}`);
+        onError?.(new Error(`Channel error`));
+      }
+      if (status === 'CLOSED') {
+        console.log(`○ Realtime closed: ${table}`);
       }
     });
 
   return () => {
+    console.log(`Cleaning up realtime subscription for ${table}`);
     supabase.removeChannel(channel);
   };
 }
