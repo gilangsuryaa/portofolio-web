@@ -15,9 +15,6 @@ const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-/** True bila service role tersedia, sehingga RLS publik boleh ditutup. */
-export const hasServiceRole = Boolean(serviceRoleKey && serviceRoleKey.length > 20);
-
 export function getSupabaseServerClient(): SupabaseClient | null {
   if (!url) return null;
 

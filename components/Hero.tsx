@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
-import { Download, ArrowUpRight, MapPin, Sparkles, Code, Briefcase } from 'lucide-react';
+import { Download, ArrowUpRight, MapPin } from 'lucide-react';
 import { Profile } from '@/lib/types';
 
 interface HeroProps {

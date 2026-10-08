@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { Skill } from '@/lib/types';
-import { Code2, Layers, Cpu, Sparkles } from 'lucide-react';
+import { Code2 } from 'lucide-react';
 
 interface SkillsProps {
   skills: Skill[];

@@ -3,7 +3,7 @@
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Profile } from '@/lib/types';
-import { User, Sparkles, Code2, Compass } from 'lucide-react';
+import { User, Compass } from 'lucide-react';
 
 interface AboutProps {
   profile?: Profile | null;

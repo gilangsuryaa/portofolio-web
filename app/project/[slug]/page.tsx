@@ -11,7 +11,7 @@ import { subscribeToRealtime } from '@/lib/supabase/client';
 import { Project, Profile } from '@/lib/types';
 import { initialProjects, initialProfile } from '@/lib/supabase/fallback-data';
 import { coverTransitionName, isViewTransitionNavigation } from '@/lib/view-transition';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Home, Sun, Moon, Github, Globe, Wrench, Clock, UserCheck, Layers } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Home, Sun, Moon, Github, Globe, Wrench, Clock, UserCheck } from 'lucide-react';
 
 export default function ProjectCaseStudyPage() {
   const params = useParams();

@@ -6,7 +6,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { Project } from '@/lib/types';
 import { coverTransitionName } from '@/lib/view-transition';
 import TransitionLink from '@/components/TransitionLink';
-import { Briefcase, ArrowUpRight, Github, Sparkles } from 'lucide-react';
+import { Briefcase, ArrowUpRight, Github } from 'lucide-react';
 
 interface ProjectsProps {
   projects: Project[];

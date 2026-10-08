@@ -28,13 +28,6 @@ export function getSupabaseBrowserClient(): SupabaseClient | null {
   return supabaseInstance;
 }
 
-export type RealtimeSubscription = {
-  table: string;
-  event: 'INSERT' | 'UPDATE' | 'DELETE' | '*';
-  onData: (payload: any) => void;
-  onError?: (error: Error) => void;
-};
-
 export function subscribeToRealtime(
   table: string,
   event: 'INSERT' | 'UPDATE' | 'DELETE' | '*',
