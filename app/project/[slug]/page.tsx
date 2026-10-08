@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
-import { getProjectBySlug, getProjects, getProfile, getCachedProjectBySlug } from '@/lib/data-service';
+import { getProjectBySlug, getProjects, getProfile, getCachedProjectBySlug, clearStoredData } from '@/lib/data-service';
 import { subscribeToRealtime } from '@/lib/supabase/client';
 import { Project, Profile } from '@/lib/types';
 import { initialProjects, initialProfile } from '@/lib/supabase/fallback-data';
@@ -65,6 +65,7 @@ export default function ProjectCaseStudyPage() {
 
     const handleProjectsChange = async () => {
       try {
+        clearStoredData('projects');
         const [updatedProj, updatedList] = await Promise.all([
           getProjectBySlug(slug),
           getProjects()
@@ -78,6 +79,7 @@ export default function ProjectCaseStudyPage() {
 
     const handleProfileChange = async () => {
       try {
+        clearStoredData('profile');
         const updatedProf = await getProfile();
         if (updatedProf) setProfile(updatedProf);
       } catch (err) {

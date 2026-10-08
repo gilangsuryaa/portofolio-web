@@ -30,6 +30,15 @@ function setStoredData<T>(key: string, value: T): void {
   }
 }
 
+export function clearStoredData(key: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(`porto_${key}`);
+  } catch (err) {
+    console.error('Failed to clear localStorage', err);
+  }
+}
+
 // ---------------- PROFILE ----------------
 export async function getProfile(): Promise<Profile> {
   const supabase = getSupabaseClient();

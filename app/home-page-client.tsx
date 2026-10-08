@@ -12,7 +12,7 @@ import ContactForm from '@/components/ContactForm';
 import Footer from '@/components/Footer';
 import { Profile, Education, Skill, Project, Certificate } from '@/lib/types';
 import { subscribeToRealtime } from '@/lib/supabase/client';
-import { getProfile, getEducation, getSkills, getProjects, getCertificates } from '@/lib/data-service';
+import { getProfile, getEducation, getSkills, getProjects, getCertificates, clearStoredData } from '@/lib/data-service';
 
 interface HomePageClientProps {
   initialProfile: Profile;
@@ -38,8 +38,10 @@ export default function HomePageClient({
   useEffect(() => {
     if (!window) return;
 
-    const handleRealtimeChange = async () => {
+    const handleRealtimeChange = async (table: string) => {
       try {
+        clearStoredData(table);
+        
         const [newProfile, newEducation, newSkills, newProjects, newCertificates] = await Promise.all([
           getProfile(),
           getEducation(),
@@ -57,11 +59,11 @@ export default function HomePageClient({
       }
     };
 
-    const unsubProfile = subscribeToRealtime('profile', '*', handleRealtimeChange);
-    const unsubEducation = subscribeToRealtime('education', '*', handleRealtimeChange);
-    const unsubSkills = subscribeToRealtime('skills', '*', handleRealtimeChange);
-    const unsubProjects = subscribeToRealtime('projects', '*', handleRealtimeChange);
-    const unsubCertificates = subscribeToRealtime('certificates', '*', handleRealtimeChange);
+    const unsubProfile = subscribeToRealtime('profile', '*', () => handleRealtimeChange('profile'));
+    const unsubEducation = subscribeToRealtime('education', '*', () => handleRealtimeChange('education'));
+    const unsubSkills = subscribeToRealtime('skills', '*', () => handleRealtimeChange('skills'));
+    const unsubProjects = subscribeToRealtime('projects', '*', () => handleRealtimeChange('projects'));
+    const unsubCertificates = subscribeToRealtime('certificates', '*', () => handleRealtimeChange('certificates'));
 
     return () => {
       unsubProfile();
